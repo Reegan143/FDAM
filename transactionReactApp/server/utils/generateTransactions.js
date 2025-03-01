@@ -25,7 +25,7 @@ exports.generateMultipleTransactions = async ({
       const amount = Math.floor(Math.random() * 100000) + 1; // Random amount between 1 and 1000
       const status = 'paid';
 
-      const transactionDetails = await axios.post('http://localhost:8003/api/transactions/make', {
+      const transactionDetails = await axios.post('http://18.210.30.25:8003/api/transactions/make', {
         senderAccNo,
         transactionId,
         receiverAccNo,
@@ -49,7 +49,7 @@ exports.generateMultipleTransactions = async ({
   
       
       // Store each transaction
-      await axios.post('http://localhost:5001/api/transactions/store', transaction);
+      await axios.post('http://18.210.30.25:5001/api/transactions/store', transaction);
       
       transactions.push(transaction);
 
