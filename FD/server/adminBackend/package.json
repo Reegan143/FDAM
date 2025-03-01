@@ -4,8 +4,8 @@
   "main": "server.js",
   "scripts": {
     "start": "nodemon server.js",
-    "test": "mocha --timeout 10000 --exit",
-    "coverage": "nyc --reporter=text npm test"
+    "test": "mocha  --timeout 10000 --exit",
+    "coverage": "nyc  --reporter=text npm test"
   },
   "keywords": [],
   "author": "",
