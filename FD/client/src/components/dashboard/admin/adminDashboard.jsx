@@ -147,7 +147,7 @@ function AdminDashboard() {
         <main className="ms-250 pt-5 mt-4">
           <div className="container-fluid">
             <div className="content-area">
-              <h1>Admin Portal - {adminData?.userName || 'Admin'}!</h1>
+              <h1>Admin Portal - {adminData?.userName}!</h1>
               <p>Manage user disputes and fraud claims.</p>
 
               {showTransactionDetails ? (

@@ -1,6 +1,5 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useState} from 'react';
 import { Row } from 'react-bootstrap';
-import { useNavigate } from 'react-router-dom';
 import Header from '../header/header';
 import VendorSidebar from '../sideBar/vendorSidebar';
 import DisputeCard from './vendorDisputeCard';

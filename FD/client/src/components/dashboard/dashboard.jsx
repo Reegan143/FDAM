@@ -48,7 +48,7 @@ function Dashboard() {
       <main className="ms-250 pt-5 mt-4">
         <div className="container-fluid">
           <div className="content-area">
-            <h1>Welcome Back, {userName || "User"}!</h1>
+            <h1>Welcome Back, {userName}!</h1>
             <p>Welcome to your Brilliant Bank overview.</p>
 
             <div className="disputes-section">
