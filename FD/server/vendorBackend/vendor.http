@@ -1,0 +1,140 @@
+@authUrl=http://localhost:8004/api/auth
+
+
+###  Check if Vendor API is running
+GET http://localhost:8000/
+
+
+### Get All Requests
+GET http://localhost:8002/api/vendor/get-all-vendors
+
+###  Vendor Signup
+POST {{authUrl}}
+Content-Type: application/json
+
+{
+  "userName": "Sailesh",
+  "vendorName" : "flipkart",
+  "email": "editiontech12@gmail.com",
+  "password": "S@Reegan12",
+  "accNo": "987654321456",
+  "cuid": "12345095",
+  "branchCode": "BRLN02",
+  "branchName": "Brillian Bank Bern",
+  "debitCardNumber" : 6453728467352454,
+  "cardType": "master card",
+  "role" : "vendor"
+}
+
+
+###  Vendor Signup
+POST {{authUrl}}
+Content-Type: application/json
+
+{
+  "userName": "Prakruthi",
+  "vendorName" : "amazon",
+  "email": "prakruthik07@gmail.com",
+  "password": "S@Reegan12",
+  "accNo": "987654321454",
+  "cuid": "12345097",
+  "branchCode": "BRLN02",
+  "branchName": "Brillian Bank Bern",
+  "debitCardNumber" : 6453728467352458,
+  "cardType": "master card",
+  "role" : "vendor"
+}
+###  3️⃣ Vendor Login (Get JWT Token)
+POST http://localhost:8000/api/user/auth/login
+Content-Type: application/json
+
+{
+  "email": "editiontech12@gmail.com",
+  "password": "S@Reegan12"
+}
+
+###  4️⃣ Vendor Requests API Key from Card Network
+POST http://localhost:8000/api/vendor/request-api-key
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2IzNzBhNmEzZmEwODcwYzQxYzhlNDQiLCJyb2xlIjoidmVuZG9yIiwiZW1haWwiOiJlZGl0aW9udGVjaDEyQGdtYWlsLmNvbSIsImlhdCI6MTczOTg0MDc2MCwiZXhwIjoxNzM5ODQ0MzYwfQ.n_UE0Zu7rs-_Rd8Phr5oakQR1XvibbPn34XAmaGmACo
+
+{
+  "vendorName" : "flipkart",
+  "transactionId" : 1864871685
+}
+
+### Vendor Fetches Stored API Key
+POST  http://localhost:8002/api/admin/request-api-key
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2I1NzRlYzcyNGYyMWQwY2Y2YTQwN2UiLCJyb2xlIjoidmVuZG9yIiwiZW1haWwiOiJlZGl0aW9udGVjaDEyQGdtYWlsLmNvbSIsImlhdCI6MTc0MDA0Mzk0OCwiZXhwIjoxNzQwMDcyNzQ4fQ.opujHv4xha29neV-_ogQA7fCrBDlARo0xHFI--uw-pM
+Content-Type: application/json
+
+{
+  "transactionId": 5901321806
+}
+
+###  6️⃣ User Makes a Transaction (Stored in Vendor DB & Sent to Card Network)
+POST http://localhost:8000/api/users/transactions/create
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ2ZW5kb3JJZCI6InZlbmRvcjEiLCJpYXQiOjE3Mzk2MDYxNTcsImV4cCI6MTczOTYwOTc1N30.Lf_k0NI1NhhYJoIKqo6RY9K3uWvyucgJCIVwhzDypME
+
+{
+  "transactionId": "txn567",
+  "userId": "user1",
+  "vendorId": "vendor1",
+  "amount": 8000,
+  "paymentMethod": "Credit Card"
+}
+
+###  7️⃣ Vendor Fetches Transaction Data from Card Network
+POST http://localhost:8000/api/vendors/transactions/fetch
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ2ZW5kb3JJZCI6InZlbmRvcjEiLCJpYXQiOjE3Mzk2MDYxNTcsImV4cCI6MTczOTYwOTc1N30.Lf_k0NI1NhhYJoIKqo6RY9K3uWvyucgJCIVwhzDypME
+
+{
+  "transactionId": "txn567"
+}
+
+###  8️⃣ User Raises a Dispute on a Transaction
+POST http://localhost:8000/api/users/disputes/raise
+Content-Type: application/json
+Authorization: Bearer <USER_JWT_TOKEN>
+
+{
+  "transactionId": "txn567",
+  "userId": "user1",
+  "reason": "Unauthorized transaction"
+}
+
+###  9️⃣ Admin Verifies and Approves/Rejects the Dispute
+POST http://localhost:8000/api/admins/disputes/verify/67adcd8708bc7fea6f12c199
+Content-Type: application/json
+Authorization: Bearer <ADMIN_JWT_TOKEN>
+
+{
+  "adminDecision": "approved"
+}
+
+###  🔟 Vendor Retrieves Notifications (If Any)
+GET http://localhost:8000/api/vendors/notifications
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ2ZW5kb3JJZCI6InZlbmRvcjEiLCJpYXQiOjE3Mzk0NjYwNTgsImV4cCI6MTczOTQ2OTY1OH0.PFWZ3fOaRYrzF5lyayhhaX4CgF2N1x7VyRifxuRrKkM
+
+###  1️⃣1️⃣ Vendor Responds to a Dispute
+POST http://localhost:8000/api/vendor/disputes/respond
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2IzMDg2MjNmMjliM2QyMjgwYzEwOGYiLCJyb2xlIjoidmVuZG9yIiwiZW1haWwiOiJlZGl0aW9udGVjaDEyQGdtYWlsLmNvbSIsImlhdCI6MTczOTc5NjcwNSwiZXhwIjoxNzM5ODAwMzA1fQ.pEebwzOkPai689DlaCdlct_q412VK6xGXdHmONOnA4k
+
+{
+  "disputeId": "67b32b7ec970bdd681d11118",
+  "vendorResponse": "Transaction is valid."
+}
+
+###  1️⃣2️⃣ Admin Sends Email Notification to Vendor
+POST http://localhost:8000/api/admins/send-email
+Content-Type: application/json
+Authorization: Bearer <ADMIN_JWT_TOKEN>
+
+{
+  "vendorId": "vendor1",
+  "subject": "Dispute Raised on Transaction txn567",
+  "message": "A dispute has been raised on transaction txn567. Please respond."
+}

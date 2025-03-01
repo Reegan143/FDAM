@@ -1,0 +1,31 @@
+@url = http://localhost:8000/api/transactions
+
+
+### create a new transaction
+POST {{url}}/make
+Content-Type: application/json
+
+{
+    "senderAccNo" : 987654321213,
+    "receiverAccNo" : 987654321456,
+    "amount" : 5000,
+    "debitCardNumber" : 6453728467352452,
+    "status" : "paid",
+    "transactionId" : 7456345289
+}
+
+### get user tran
+
+GET {{url}}
+Authorization: BEARER eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2FhYzcwZWVhZGM5YzQ1ZTlkYjcxZmYiLCJyb2xlIjoidXNlciIsImVtYWlsIjoicHJha3J1dGhpazA3QGdtYWlsLmNvbSIsImlhdCI6MTczOTI1Mzk5NywiZXhwIjoxNzM5MjU3NTk3fQ.RewPNjeMlc325sWGEWeu8IQqhMbiuNLERIte7xMV7qk
+
+### delete transactions
+
+DELETE {{url}}
+Authorization: BEARER eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2FlMGZjNzRjYWZmZmVlMDFiMjYyNTgiLCJyb2xlIjoidXNlciIsImVtYWlsIjoibmV2ZXJnaXZldXBtcmtib3lzQGdtYWlsLmNvbSIsImFkbWluSWQiOm51bGwsImlhdCI6MTczOTg1NDQwNSwiZXhwIjoxNzM5ODU4MDA1fQ.tLATWpO3Q164TfI7DdjVjWNSEGYQi-ncVcW3B1-cdw4
+Content-Type: application/json
+
+{
+    "email" : "editiontech12@gmail.com"
+}
+

@@ -1,0 +1,147 @@
+@apiUrl=http://localhost:8000/api
+
+@authUrl=http://localhost:8004/api/auth
+
+### create a new user
+
+POST {{authUrl}}
+Content-Type: application/json
+
+{
+  "userName": "Reegan S",
+  "email": "reeganofficial43@gmail.com",
+  "password": "S@Reegan12",
+  "accNo": "987654321219",
+  "cuid": "12345099",
+  "adminId" : 6633,
+  "branchCode": "BRLN02",
+  "branchName": "Brillian Bank Bern",
+  "debitCardNumber" : 6453728467352456,
+  "cardType": "master card",
+  "role" : "admin"
+}
+
+### create a new user
+
+POST {{authUrl}}
+Content-Type: application/json
+
+{
+  "userName": "Reegan S",
+  "email": "nevergiveupmrkboys@gmail.com",
+  "password": "S@Reegan12",
+  "accNo": "987654321213",
+  "cuid": "12345092",
+#   "adminId" : 6633,
+  "branchCode": "BRLN02",
+  "branchName": "Brillian Bank Bern",
+  "debitCardNumber" : 6453728467352452,
+  "cardType": "master card"
+#   "role" : "admin"
+}
+
+### create a new user
+
+POST {{apiUrl}}/user
+Content-Type: application/json
+
+{
+  "userName": "Reegan",
+  "email": "nevergiveupmrkboys@gmail.com",
+  "password": "S@Reegan12",
+#   "role" : "admin"
+
+}
+### get all users
+
+GET {{apiUrl}}/user/me
+Authorization: BEARER eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2IyZDgzODFlZjMwOWYwYWYyZjZjMTEiLCJyb2xlIjoidXNlciIsImlhdCI6MTczOTc3NTIyOSwiZXhwIjoxNzM5Nzc4ODI5fQ.ZFi2IZhhT594RhvxENDQIu3DbxisNrFviMRHJ5XNCFk
+
+### get user by id 
+
+GET {{apiUrl}}/user/reeganofficial43@gmail.com
+
+### delete user
+
+DELETE {{apiUrl}}/user/nevergiveupmrkboys@gmail.com
+
+### update user
+
+PUT {{apiUrl}}/user/679ee502e67731c6dfc20b84
+Content-Type: application/json
+
+{
+    "userName": "Prakruthi Updated",
+    "email": "prakruth@example.com",
+    "password": "prakruthi@12"
+ 
+}
+
+### change userName
+
+PATCH {{apiUrl}}/user/6799205ebd0f8383db052e8d
+Content-Type: application/json
+
+{
+    "userName": "Mental Prakruthi"
+ 
+}
+
+
+
+### get user disputes
+GET http://localhost:8003/api/disputes/me
+
+### login   
+
+POST {{apiUrl}}/user/auth/login
+Content-Type: application/json
+
+
+{
+    "email": "nevergiveupmrkboys@gmail.com",
+    "password": "S@Reegan12"
+}
+### login   
+
+POST {{apiUrl}}/user/auth/login
+Content-Type: application/json
+
+
+{
+    "email": "nevergiveupmrkboys@gmail.com",
+    "password": "S@Reegan12"
+}
+ 
+### reset password
+
+POST {{apiUrl}}/user/reset-password
+Content-Type: application/json
+
+{
+    "email": "reeganofficial43@gmail.com"
+}
+
+### verify Otp with password
+
+POST {{apiUrl}}/user/verify-otp
+Content-Type: application/json
+
+{
+    "otp": 2252,
+    "email": "reeganofficial43@gmail.com",
+    "newPassword": "S@Reegan21"
+}
+
+### dispute status
+
+PATCH {{apiUrl}}/admin/dispute-status
+Authorization: BEARER eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2IzMWQ2OTFjOGQxYmMyMzYyMzRiNjkiLCJyb2xlIjoiYWRtaW4iLCJlbWFpbCI6InJlZWdhbm9mZmljaWFsNDNAZ21haWwuY29tIiwiYWRtaW5JZCI6NjYzMywiaWF0IjoxNzM5NzkyNTc3LCJleHAiOjE3Mzk3OTYxNzd9.ZRS9pD9YRZwJy3tUY6f-WKJmusWXl4Uur1AOXizU6Sc
+Content-Type: application/json
+
+{
+    "disputeId": "67b329a64eda1b90584b61e4",
+    "status": "closed",
+    "remarks" : "your dispute has been closed"
+}
+

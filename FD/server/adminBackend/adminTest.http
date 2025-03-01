@@ -1,0 +1,85 @@
+### Variables
+@baseUrl = http://localhost:8000/api/admin
+
+
+@authToken = YOUR_JWT_TOKEN_HERE
+
+
+### register Admin
+
+POST {{baseUrl}}/register
+Content-Type: application/json
+
+{
+    "userName" : "Reegan Admin",
+    "email": "editiontech12@gmail.com",
+    "password": "S@Reegan12",
+    "permissions" : "manage_disputes"
+}
+
+
+### Admin Login
+POST {{baseUrl}}/login
+Content-Type: application/json
+
+{
+    "email": "editiontech12@gmail.com",
+    "password": "S@Reegan12"
+}
+
+### Reset Password Request
+POST {{baseUrl}}/reset-password
+Content-Type: application/json
+
+{
+    "email": "reeganofficial43@gmail.com"
+}
+
+### Get High Value Disputes
+GET {{baseUrl}}/high-value-disputes
+Authorization: Bearer {{authToken}}
+
+### Update Dispute Status
+PATCH {{baseUrl}}/dispute-status
+Authorization: Bearer {{authToken}}
+Content-Type: application/json
+
+{
+    "disputeId": "65cb123e4f5a6b7c8d9e0f12",
+    "status": "closed",
+    "remarks": "Verified and approved refund for customer"
+}
+
+### Generate Fraud Report
+POST {{baseUrl}}/generate-report
+Authorization: Bearer {{authToken}}
+Content-Type: application/json
+
+{
+    "startDate": "2024-02-01",
+    "endDate": "2024-02-29"
+}
+
+### Create Sample Dispute (for testing)
+POST http://localhost:3000/api/disputes/disputeform
+Content-Type: application/json
+
+{
+    "transactionDate": "2024-02-08T10:00:00Z",
+    "digitalChannel": "Mobile Banking",
+    "complaintType": "Unauthorized Transaction",
+    "transactionId": 1234567890,
+    "disputedAmount": 15000,
+    "description": "I did not authorize this transaction",
+    "debitCardNumber": 4111111111111111,
+    "email": "customer@example.com"
+}
+
+### Get All Disputes
+GET {{baseUrl}}/disputes
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2IzMWQ2OTFjOGQxYmMyMzYyMzRiNjkiLCJyb2xlIjoiYWRtaW4iLCJlbWFpbCI6InJlZWdhbm9mZmljaWFsNDNAZ21haWwuY29tIiwiYWRtaW5JZCI6NjYzMywiaWF0IjoxNzM5Nzk1NjU0LCJleHAiOjE3Mzk3OTkyNTR9.0kzuR5_TtNAP7rdkdD9w_mcWnwsrk0foLUkDRvK1-Ts
+
+
+### Get User Disputes
+GET http://localhost:3000/api/disputes/customer@example.com
+Authorization: Bearer {{authToken}}

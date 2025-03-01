@@ -1,0 +1,19 @@
+@url = http://localhost:8000/api/disputes/disputeform
+
+
+
+### register a dispute
+
+POST {{url}}
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2JjM2RlY2U1MzhhYjVmM2RmMzNkYjQiLCJyb2xlIjoidXNlciIsImVtYWlsIjoibmV2ZXJnaXZldXBtcmtib3lzQGdtYWlsLmNvbSIsImlhdCI6MTc0MDM4OTg5MywiZXhwIjoxNzQwNDE4NjkzfQ.3XTYNzBvicBZG6vGnOvugEC54bqvS6T1Muqf4ynsbKw
+Content-Type: application/json
+
+{
+    "digitalChannel" : "google pay",    
+    "complaintType" : "fraud",
+    "transactionId" : 1661246526,
+    "description" : "I want refund",
+    "debitCardNumber" : 6453728467352452,
+    "vendorName" : "Amazon"
+}
+

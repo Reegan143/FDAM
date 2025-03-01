@@ -1,0 +1,33 @@
+### 🟢 1️⃣ Check if Card Network API is running
+GET http://localhost:5001/
+
+### 🟢 2️⃣ Vendor Requests API Key from Card Network
+POST http://localhost:5001/api/vendor/generate-api-key
+Content-Type: application/json
+
+{
+  "vendorId": "vendor1"
+}
+
+### 🟢 3️⃣ Fetch Stored API Key for Vendor
+GET http://localhost:5001/api/vendor/get-api-key/vendor1
+
+### 🟢 4️⃣ Verify API Key (For Testing)
+GET http://localhost:5001/api/vendor/verify-api-key
+x-api-key: <VENDOR_API_KEY>
+
+### 🟢 5️⃣ Store Transaction in Card Network (Called Automatically by Vendor Backend)
+POST http://localhost:5001/api/card-network/transactions/store
+Content-Type: application/json
+
+{
+  "transactionId": "txn567",
+  "vendorId": "vendor1",
+  "amount": 5000,
+  "paymentMethod": "Credit Card"
+}
+
+### 🟢 6️⃣ Vendor Fetches Transaction Details from Card Network
+GET http://localhost:5001/api/card-network/transactions/txn567
+x-api-key: <VENDOR_API_KEY>
+Authorization: Bearer <VENDOR_JWT_TOKEN>

@@ -1,0 +1,7 @@
+@url = http://localhost:
+
+### 
+GET {{url}}8003/api/notifications
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2JjM2RlY2U1MzhhYjVmM2RmMzNkYjQiLCJyb2xlIjoidXNlciIsImVtYWlsIjoibmV2ZXJnaXZldXBtcmtib3lzQGdtYWlsLmNvbSIsImlhdCI6MTc0MDM4OTg5MywiZXhwIjoxNzQwNDE4NjkzfQ.3XTYNzBvicBZG6vGnOvugEC54bqvS6T1Muqf4ynsbKw
+
+
