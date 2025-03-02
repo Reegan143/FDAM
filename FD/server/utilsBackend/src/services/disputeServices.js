@@ -23,8 +23,7 @@ class DisputesService {
         const userRecord = await DisputesRepository.findUserByDebitCard(debitCardNumber);
         if (!userRecord) throw new Error('Debit Card Number Not Found');
         const cardType = userRecord.cardType;
-        const isUser = await UserRepository.findUserById(user.userId)
-        const userName = isUser.userName
+        const userName = userRecord.userName
         
         const ticketNumber = await DisputesRepository.generateUniqueTicketNumber();
         disputeData = { ...disputeData, ticketNumber, email: user.email, amount, adminId: admin.adminId, cardType };

@@ -35,8 +35,8 @@ const Signup = () => {
       newErrors.email = 'Valid email is required';
     }
     
-    if (formData.password.length < 6) {
-      newErrors.password = 'Password must be at least 6 characters long';
+    if (formData.password.length < 8) {
+      newErrors.password = 'Password must be at least 8 characters long';
     }
     
     if (formData.password !== formData.confirmPassword) {
