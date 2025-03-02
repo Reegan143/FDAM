@@ -10,7 +10,6 @@ class DisputesRepository {
     async getDisputeById(id) {
         return await DisputesModel.findById(id);
     }
-
     
 }
 
