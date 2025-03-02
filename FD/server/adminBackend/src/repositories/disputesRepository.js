@@ -11,6 +11,14 @@ class DisputesRepository {
         return await DisputesModel.findById(id);
     }
     
+    async updateById(disputeId, status, remarks, adminId){
+        return await DisputesModel.findByIdAndUpdate(
+            disputeId,
+            { status, adminRemarks: remarks, resolvedBy: adminId, resolvedAt: new Date() },
+            { new: true }
+        )
+    }
+
 }
 
 module.exports = new DisputesRepository();
