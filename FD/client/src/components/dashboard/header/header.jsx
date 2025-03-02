@@ -81,90 +81,100 @@ const Header = () => {
   };
 
   return (
-    <Navbar bg="white" expand="lg" fixed="top" className="shadow-sm">
-      <Container fluid>
-        <Navbar.Brand onClick={handleHomeClick} style={{ cursor: 'pointer' }} className="d-flex align-items-center">
-          <motion.img
-            whileHover={{ scale: 1.05 }}
-            src="https://mma.prnewswire.com/media/2171380/Brillio_Logo.jpg?p=twitter"
-            alt="Brillian Bank"
-            height="40"
-            className="me-2"
-          />
-          <motion.span
-            whileHover={{ color: '#0056b3' }}
+    <Navbar bg="white" expand="lg" fixed="top" className="shadow-sm py-2">
+  <Container fluid>
+    <Navbar.Brand onClick={handleHomeClick} style={{ cursor: 'pointer' }} className="d-flex align-items-center">
+      <motion.img
+        whileHover={{ scale: 1.05 }}
+        src="https://mma.prnewswire.com/media/2171380/Brillio_Logo.jpg?p=twitter"
+        alt="Brillian Bank"
+        height="32"
+        className="me-2"
+      />
+      <motion.span
+        whileHover={{ color: '#0056b3' }}
+        className="fs-5"
+      >
+        Brillian Bank
+      </motion.span>
+    </Navbar.Brand>
+
+    <Navbar.Toggle aria-controls="basic-navbar-nav" className="border-0" />
+
+    <Navbar.Collapse id="basic-navbar-nav">
+      <Nav className="ms-auto d-flex align-items-center gap-2 py-2 py-lg-0">
+        <motion.div
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 0.9 }}
+        >
+          <Button 
+            variant="link" 
+            className="p-1" 
+            onClick={handleSettingsClick}
+            data-testid="settings-button"
           >
-            Brillian Bank
-          </motion.span>
-        </Navbar.Brand>
+            <i className="fas fa-user"></i>
+          </Button>
+        </motion.div>
 
-        <Navbar.Toggle aria-controls="basic-navbar-nav" />
-
-        <Navbar.Collapse id="basic-navbar-nav">
-          <Nav className="ms-auto d-flex align-items-center">
-            <motion.div
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.9 }}
+        <div className="position-relative" ref={notificationRef}>
+          <motion.div
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
+          >
+            <Button 
+              variant="link" 
+              className="position-relative p-1" 
+              onClick={toggleNotifications}
+              data-testid="notification-toggle"
             >
-              <Button 
-                variant="link" 
-                className="me-1" 
-                onClick={handleSettingsClick}
-                data-testid="settings-button"
-              >
-                <i className="fas fa-user"></i>
-              </Button>
-            </motion.div>
-
-            <div className="position-relative" ref={notificationRef}>
-              <motion.div
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.9 }}
-              >
-                <Button 
-                  variant="link" 
-                  className="position-relative me-3" 
-                  onClick={toggleNotifications}
-                  data-testid="notification-toggle"
+              <Bell size={20} />
+              {unreadCount > 0 && (
+                <Badge 
+                  pill 
+                  bg="danger" 
+                  className="position-absolute top-0 start-100 translate-middle"
+                  style={{ fontSize: '0.65rem' }}
                 >
-                  <Bell size={20} />
-                  {unreadCount > 0 && (
-                    <Badge 
-                      pill 
-                      bg="danger" 
-                      className="position-absolute top-0 start-100 translate-middle"
-                    >
-                      {unreadCount}
-                    </Badge>
-                  )}
-                </Button>
-              </motion.div>
+                  {unreadCount}
+                </Badge>
+              )}
+            </Button>
+          </motion.div>
 
-              <NotificationsPopup
-                showNotifications={showNotifications}
-                notifications={notifications}
-                markAsRead={markAsRead}
-                onClose={() => setShowNotifications(false)}
-                unreadCount={unreadCount}
-              />
-            </div>
+          <NotificationsPopup
+            showNotifications={showNotifications}
+            notifications={notifications}
+            markAsRead={markAsRead}
+            onClose={() => setShowNotifications(false)}
+            unreadCount={unreadCount}
+            style={{ 
+              position: 'absolute', 
+              right: 0, 
+              zIndex: 1050, 
+              width: '300px',
+              maxWidth: 'calc(100vw - 32px)' 
+            }}
+          />
+        </div>
 
-            <motion.div
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              <Button 
-                variant="danger" 
-                onClick={handleLogout} 
-                className="me-2"
-              >
-                Logout
-              </Button>
-            </motion.div>
-          </Nav>
-        </Navbar.Collapse>
-      </Container>
-    </Navbar>
+        <motion.div
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+        >
+          <Button 
+            variant="danger" 
+            onClick={handleLogout} 
+            size="sm"
+            className="px-3"
+          >
+            Logout
+          </Button>
+        </motion.div>
+      </Nav>
+    </Navbar.Collapse>
+  </Container>
+</Navbar>
   );
 };
 

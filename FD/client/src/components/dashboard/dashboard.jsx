@@ -42,46 +42,57 @@ function Dashboard() {
   }
 
   return (
-    <div className="d-flex flex-column min-vh-100">
-      <Header />
-      <Sidebar />
-      <main className="ms-250 pt-5 mt-4">
-        <div className="container-fluid">
-          <div className="content-area">
-            <h1>Welcome Back, {userName}!</h1>
-            <p>Welcome to your Brilliant Bank overview.</p>
+    <div className="d-flex flex-column vh-100">
+  {/* Fixed header */}
+  <div className="fixed-top">
+    <Header />
+  </div>
+  
+  {/* Content area with proper spacing */}
+  <div className="d-flex flex-column flex-md-row" style={{ marginTop: "56px" }}>
+    {/* Sidebar component */}
+    <Sidebar />
+    
+    {/* Main content area */}
+    <main className="flex-grow-1 p-3 p-md-4" style={{ minWidth: "0" }}>
+      <div className="container-fluid px-0">
+        <div className="content-area">
+          <h1 className="h2 mb-2">Welcome Back, {userName}!</h1>
+          <p className="mb-4">Welcome to your Brilliant Bank overview.</p>
 
-            <div className="disputes-section">
-              <div className="d-flex justify-content-between align-items-center mb-4">
-                <h2>Your Disputes ({disputes.length})</h2>
-              </div>
+          <div className="disputes-section">
+            <div className="d-flex justify-content-between align-items-center mb-3">
+              <h2 className="h4">Your Disputes ({disputes.length})</h2>
+            </div>
 
-              <Row className="mt-4">
-                {disputes.map((dispute) => (
+            <div className="row g-3">
+              {disputes.map((dispute) => (
+                <div className="col-12 col-sm-6 col-lg-4 mb-3" key={dispute._id}>
                   <DisputeCard
-                    key={dispute._id}
                     dispute={dispute}
                     onClick={() => handleDisputeClick(dispute)}
                   />
-                ))}
-              </Row>
-
-              <DisputeModal
-                show={showModal}
-                dispute={selectedDispute}
-                onClose={handleCloseModal}
-              />
-
-              <SessionExpiredModal
-                show={sessionExpired}
-                onConfirm={handleSessionExpired}
-              />
+                </div>
+              ))}
             </div>
+
+            <DisputeModal
+              show={showModal}
+              dispute={selectedDispute}
+              onClose={handleCloseModal}
+            />
+
+            <SessionExpiredModal
+              show={sessionExpired}
+              onConfirm={handleSessionExpired}
+            />
           </div>
         </div>
-        <ChatBubble />
-      </main>
-    </div>
+      </div>
+      <ChatBubble />
+    </main>
+  </div>
+</div>
   );
 }
 

@@ -4,6 +4,7 @@ import { Form, Button, Container, Row, Col, Alert } from 'react-bootstrap';
 import { useNavigate, useLocation } from 'react-router-dom';
 import Header from '../dashboard/header/header';
 import Sidebar from '../dashboard/sideBar/sidebar';
+import ChatBubble from '../chatbot/ChatBubble';
 
 function DisputesForm() {
   const navigate = useNavigate();
@@ -160,19 +161,32 @@ function DisputesForm() {
   const now = new Date().toISOString().slice(0, 16);
 
   return (
-    <div className="d-flex flex-column min-vh-100">
-      <Header />
-      <Sidebar />
-      <main className="ms-250 pt-5 mt-4">
-        <div className="container-fluid">
-          <div className="content-area">
-            <h1>Raise Disputes</h1>
-            <Container className="mt-5">
-              <Row className="justify-content-center">
-                <Col md={8}>
-                  <h2 className="text-center mb-4">Complaint Registration Form</h2>
-                  <Form onSubmit={handleSubmit}>
-                    <Form.Group className="mb-3">
+    <div className="d-flex flex-column vh-100">
+  {/* Fixed header */}
+  <div className="fixed-top">
+    <Header />
+  </div>
+  
+  {/* Content area with proper spacing */}
+  <div className="d-flex flex-column flex-md-row" style={{ marginTop: "56px" }}>
+    {/* Sidebar component */}
+    <Sidebar />
+    
+    {/* Main content area */}
+    <main className="flex-grow-1 p-3 p-md-4" style={{ minWidth: "0" }}>
+      <div className="container-fluid px-0">
+        <div className="content-area">
+          <h1 className="h2 mb-3">Raise Disputes</h1>
+          
+          <div className="card shadow-sm border-0 mb-4">
+            <div className="card-header bg-light">
+              <h2 className="h5 mb-0 text-center text-md-start">Complaint Registration Form</h2>
+            </div>
+            <div className="card-body p-3 p-md-4">
+              <Form onSubmit={handleSubmit}>
+                <Row>
+                  <Col xs={12} md={6} className="mb-3">
+                    <Form.Group>
                       <Form.Label>Digital Channel <span className="text-danger">*</span></Form.Label>
                       <Form.Select 
                         name="digitalChannel" 
@@ -191,9 +205,10 @@ function DisputesForm() {
                         <option value="other">Other</option>
                       </Form.Select>
                     </Form.Group>
-
-
-                    <Form.Group className="mb-3">
+                  </Col>
+                  
+                  <Col xs={12} md={6} className="mb-3">
+                    <Form.Group>
                       <Form.Label>Complaint Type <span className="text-danger">*</span></Form.Label>
                       <Form.Control 
                         type="text" 
@@ -207,23 +222,61 @@ function DisputesForm() {
                         {errors.complaintType}
                       </Form.Control.Feedback>
                     </Form.Group>
-
-                    <Form.Group className="mb-3">
-                    <Form.Label>Transaction ID <span className="text-danger">*</span></Form.Label>
+                  </Col>
+                  
+                  <Col xs={12} md={6} className="mb-3">
+                    <Form.Group>
+                      <Form.Label>Transaction ID <span className="text-danger">*</span></Form.Label>
                       <Form.Control 
-                          type="text" 
-                          name="transactionId" 
-                          value={formData.transactionId} 
-                          readOnly
-                         
+                        type="text" 
+                        name="transactionId" 
+                        value={formData.transactionId} 
+                        readOnly
                       />
                       <Form.Control.Feedback type="invalid">
                         {errors.transactionId}
                       </Form.Control.Feedback>
                     </Form.Group>
-
-
-                    <Form.Group className="mb-3">
+                  </Col>
+                  
+                  <Col xs={12} md={6} className="mb-3">
+                    <Form.Group>
+                      <Form.Label>Debit Card Number <span className="text-danger">*</span></Form.Label>
+                      <Form.Control 
+                        type="text" 
+                        name="debitCardNumber" 
+                        value={formData.debitCardNumber} 
+                        readOnly
+                      />
+                      <Form.Control.Feedback type="invalid">
+                        {errors.debitCardNumber}
+                      </Form.Control.Feedback>
+                    </Form.Group>
+                  </Col>
+                  
+                  <Col xs={12} className="mb-3">
+                    <Form.Group>
+                      <Form.Label>Vendor <span className="text-danger">*</span></Form.Label>
+                      <Form.Select 
+                        name="vendorName" 
+                        value={formData.vendorName} 
+                        onChange={handleChange} 
+                      >
+                        <option value="">Select Vendor</option>
+                        {vendors.map((vendor) => (
+                          <option 
+                            key={vendor._id} 
+                            value={vendor.vendorName}
+                          >
+                            {vendor.vendorName.charAt(0).toUpperCase() + vendor.vendorName.slice(1)}
+                          </option>
+                        ))}
+                      </Form.Select>
+                    </Form.Group>
+                  </Col>
+                  
+                  <Col xs={12} className="mb-3">
+                    <Form.Group>
                       <Form.Label>Description <span className="text-danger">*</span></Form.Label>
                       <Form.Control 
                         as="textarea" 
@@ -238,62 +291,40 @@ function DisputesForm() {
                         {errors.description}
                       </Form.Control.Feedback>
                     </Form.Group>
-
-                    <Form.Group className="mb-3">
-                    <Form.Label>Debit Card Number <span className="text-danger">*</span></Form.Label>
-                        <Form.Control 
-                            type="text" 
-                            name="debitCardNumber" 
-                            value={formData.debitCardNumber} 
-                            readOnly
-                            
-                        />
-                      <Form.Control.Feedback type="invalid">
-                        {errors.debitCardNumber}
-                      </Form.Control.Feedback>
-                    </Form.Group>
-
-                    <Form.Group className="mb-3">
-                      <Form.Label>Vendor : <span className="text-danger">*</span></Form.Label>
-                      <Form.Select 
-                        name="vendorName" 
-                        value={formData.vendorName} 
-                        onChange={handleChange} 
-                      >
-                        <option value="">Select Vendor</option>
-                        {vendors.map((vendor) => (
-                          <option 
-                            key={vendor._id} 
-                            value={vendor.vendorName}
-                          >
-                            {vendor.vendorName.charAt(0).toUpperCase() + vendor.vendorName.slice(1)}
-                          </option>
-                          ))}
-                      </Form.Select>
-                    </Form.Group>
-
-                    <div className="text-center">
-                      {notification.message && (
-                        <Alert variant={notification.type} dismissible>
-                          {notification.message}
-                        </Alert>
-                      )}
-                      <Button 
-                        variant="primary" 
-                        type="submit" 
-                        disabled={isSubmitting}
-                      >
-                        {isSubmitting ? 'Submitting...' : 'Submit'}
-                      </Button>
-                    </div>
-                  </Form>
-                </Col>
-              </Row>
-            </Container>
+                  </Col>
+                </Row>
+                
+                <div className="mt-4">
+                  {notification.message && (
+                    <Alert variant={notification.type} dismissible className="mb-3">
+                      {notification.message}
+                    </Alert>
+                  )}
+                  <div className="d-grid d-md-flex justify-content-md-center">
+                    <Button 
+                      variant="primary" 
+                      type="submit" 
+                      disabled={isSubmitting}
+                      className="px-4 py-2"
+                    >
+                      {isSubmitting ? (
+                        <>
+                          <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                          Submitting...
+                        </>
+                      ) : 'Submit'}
+                    </Button>
+                  </div>
+                </div>
+              </Form>
+            </div>
           </div>
         </div>
-      </main>
-    </div>
+      </div>
+      <ChatBubble/>
+    </main>
+  </div>
+</div>
   );
 }
 

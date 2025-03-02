@@ -310,105 +310,236 @@ const ChatBubble = () => {
 
   return (
     <>
-      {/* Chat bubble button */}
-      <div className="chat-bubble-container">
-        <Button 
-          className="chat-bubble-button" 
-          onClick={toggleChat}
-          aria-label={isOpen ? "Close chat" : "Open chat"}
-        >
-          {isOpen ? <X size={20} /> : <MessageCircle size={20} />}
-        </Button>
-      </div>
+  <style>
+    {`
+    .chat-bubble-container {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 1030;
+    }
+    
+    .chat-bubble-button {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+    
+    .chat-window {
+      position: fixed;
+      bottom: 80px;
+      right: 20px;
+      width: 320px;
+      max-width: calc(100vw - 40px);
+      height: 400px;
+      max-height: calc(100vh - 140px);
+      z-index: 1029;
+      border-radius: 10px;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    
+    .chat-messages {
+      flex-grow: 1;
+      overflow-y: auto;
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .message {
+      max-width: 80%;
+      padding: 8px 12px;
+      border-radius: 10px;
+      margin-bottom: 8px;
+      font-size: 0.9rem;
+      word-break: break-word;
+    }
+    
+    .bot-message {
+      background-color: #f0f2f5;
+      align-self: flex-start;
+      border-bottom-left-radius: 2px;
+    }
+    
+    .user-message {
+      background-color: #0d6efd;
+      color: white;
+      align-self: flex-end;
+      border-bottom-right-radius: 2px;
+    }
+    
+    .error-message {
+      background-color: #f8d7da;
+      color: #842029;
+    }
+    
+    .ticket-number {
+      font-size: 0.8rem;
+      margin-top: 5px;
+      font-weight: bold;
+    }
+    
+    .typing-indicator {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      padding: 10px;
+      height: 36px;
+    }
+    
+    .typing-indicator span {
+      width: 8px;
+      height: 8px;
+      background: #aaa;
+      border-radius: 50%;
+      display: inline-block;
+      animation: pulse 1.2s infinite ease-in-out;
+    }
+    
+    .typing-indicator span:nth-child(2) {
+      animation-delay: 0.2s;
+    }
+    
+    .typing-indicator span:nth-child(3) {
+      animation-delay: 0.4s;
+    }
+    
+    @keyframes pulse {
+      0%, 100% { opacity: 0.4; transform: scale(1); }
+      50% { opacity: 1; transform: scale(1.2); }
+    }
+    
+    .system-message {
+      background-color: #f8f9fa;
+      padding: 10px;
+      border-radius: 10px;
+      text-align: center;
+      margin: 10px 0;
+      font-size: 0.8rem;
+    }
+    
+    @media (max-width: 576px) {
+      .chat-window {
+        height: 350px;
+        bottom: 75px;
+      }
+      
+      .chat-bubble-button {
+        width: 45px;
+        height: 45px;
+      }
+    }
+    `}
+  </style>
 
-      {/* Chat window */}
-      {isOpen && (
-        <Card className="chat-window" ref={chatWindowRef}>
-          <Card.Header className="d-flex justify-content-between align-items-center py-2">
-            <h6 className="mb-0">Dispute Assistant</h6>
-            <div className="d-flex">
-              <OverlayTrigger
-                placement="top"
-                overlay={<Tooltip>Reset conversation</Tooltip>}
-              >
-                <Button 
-                  variant="link" 
-                  className="p-1 text-primary me-2" 
-                  onClick={resetChat}
-                  disabled={loading}
-                >
-                  <RefreshCw size={14} />
-                </Button>
-              </OverlayTrigger>
-              <Button 
-                variant="link" 
-                className="p-1 text-dark" 
-                onClick={toggleChat}
-              >
-                <X size={16} />
-              </Button>
-            </div>
-          </Card.Header>
-          <Card.Body className="chat-messages">
-            {messages.map((msg, index) => (
-              <div 
-                key={index} 
-                className={`message ${msg.sender === 'bot' ? 'bot-message' : 'user-message'} ${msg.isError ? 'error-message' : ''}`}
-              >
-                {msg.text}
-                {msg.ticketNumber && (
-                  <div className="ticket-number">
-                    Ticket #{msg.ticketNumber}
-                  </div>
-                )}
-              </div>
-            ))}
-            {loading && (
-              <div className="message bot-message typing-indicator">
-                <span></span>
-                <span></span>
-                <span></span>
-              </div>
-            )}
-            {errorState && (
-              <div className="system-message">
-                <p>Connection issue detected. Using simplified chat mode.</p>
-                <Button 
-                  variant="outline-primary" 
-                  size="sm" 
-                  onClick={resetChat}
-                  className="mt-2"
-                >
-                  Reset Chat
-                </Button>
+  {/* Chat bubble button */}
+  <div className="chat-bubble-container">
+    <Button 
+      className="chat-bubble-button" 
+      onClick={toggleChat}
+      aria-label={isOpen ? "Close chat" : "Open chat"}
+    >
+      {isOpen ? <X size={20} /> : <MessageCircle size={20} />}
+    </Button>
+  </div>
+
+  {/* Chat window */}
+  {isOpen && (
+    <Card className="chat-window" ref={chatWindowRef}>
+      <Card.Header className="d-flex justify-content-between align-items-center py-2 px-3">
+        <h6 className="mb-0 fs-6">Dispute Assistant</h6>
+        <div className="d-flex">
+          <OverlayTrigger
+            placement="top"
+            overlay={<Tooltip>Reset conversation</Tooltip>}
+          >
+            <Button 
+              variant="link" 
+              className="p-1 text-primary me-1" 
+              onClick={resetChat}
+              disabled={loading}
+            >
+              <RefreshCw size={14} />
+            </Button>
+          </OverlayTrigger>
+          <Button 
+            variant="link" 
+            className="p-1 text-dark" 
+            onClick={toggleChat}
+          >
+            <X size={16} />
+          </Button>
+        </div>
+      </Card.Header>
+      <Card.Body className="chat-messages p-2 p-sm-3">
+        {messages.map((msg, index) => (
+          <div 
+            key={index} 
+            className={`message ${msg.sender === 'bot' ? 'bot-message' : 'user-message'} ${msg.isError ? 'error-message' : ''}`}
+          >
+            {msg.text}
+            {msg.ticketNumber && (
+              <div className="ticket-number">
+                Ticket #{msg.ticketNumber}
               </div>
             )}
-            <div ref={messagesEndRef} />
-          </Card.Body>
-          <Card.Footer className="p-2">
-            <Form onSubmit={sendMessage}>
-              <InputGroup>
-                <Form.Control
-                  placeholder="Type your message..."
-                  value={input}
-                  onChange={(e) => setInput(e.target.value)}
-                  disabled={loading}
-                  size="sm"
-                />
-                <Button 
-                  type="submit" 
-                  variant="primary" 
-                  disabled={loading || !input.trim()}
-                  size="sm"
-                >
-                  <Send size={16} />
-                </Button>
-              </InputGroup>
-            </Form>
-          </Card.Footer>
-        </Card>
-      )}
-    </>
+          </div>
+        ))}
+        {loading && (
+          <div className="message bot-message typing-indicator">
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+        )}
+        {errorState && (
+          <div className="system-message">
+            <p className="mb-2">Connection issue detected. Using simplified chat mode.</p>
+            <Button 
+              variant="outline-primary" 
+              size="sm" 
+              onClick={resetChat}
+              className="py-1 px-2"
+            >
+              Reset Chat
+            </Button>
+          </div>
+        )}
+        <div ref={messagesEndRef} />
+      </Card.Body>
+      <Card.Footer className="p-2">
+        <Form onSubmit={sendMessage}>
+          <InputGroup>
+            <Form.Control
+              placeholder="Type your message..."
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              disabled={loading}
+              size="sm"
+              className="py-2"
+            />
+            <Button 
+              type="submit" 
+              variant="primary" 
+              disabled={loading || !input.trim()}
+              size="sm"
+            >
+              <Send size={16} />
+            </Button>
+          </InputGroup>
+        </Form>
+      </Card.Footer>
+    </Card>
+  )}
+</>
   );
 };
 
