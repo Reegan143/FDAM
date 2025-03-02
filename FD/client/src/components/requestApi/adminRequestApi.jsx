@@ -49,12 +49,20 @@ const APIKeyRequests = () => {
     };
 
     return (
-        <div className="d-flex flex-column min-vh-100">
-            <Header/>
-            <AdminSidebar/>
-            <main className="ms-250 pt-5 mt-4">
-                <div className="container-fluid">
-                    <h1>API Key Requests</h1>
+        <div className="d-flex flex-column vh-100">
+    {/* Fixed header */}
+    <div className="fixed-top">
+      <Header />
+    </div>
+    
+    {/* Content area with proper spacing */}
+    <div className="d-flex flex-column flex-md-row" style={{ marginTop: "56px" }}>
+      {/* Sidebar component */}
+      <AdminSidebar />
+        <main className="flex-grow-1 pt-5 mt-4 px-3">
+            <div className="container-fluid">
+                <h1>API Key Requests</h1>
+                <div className="table-responsive">
                     <Table striped bordered hover>
                         <thead>
                             <tr>
@@ -73,8 +81,20 @@ const APIKeyRequests = () => {
                                     <td>
                                         {request.status === 'pending' && (
                                             <>
-                                                <Button variant="success" onClick={() => handleApprove(request._id,request.email, request.transactionId)}>Approve</Button>
-                                                <Button variant="danger" className="ms-2" onClick={() => handleReject(request._id, request.email, request.transactionId)}>Reject</Button>
+                                                <Button 
+                                                    variant="success" 
+                                                    className="me-2 mb-1 mb-sm-0"
+                                                    onClick={() => handleApprove(request._id,request.email, request.transactionId)}
+                                                >
+                                                    Approve
+                                                </Button>
+                                                <Button 
+                                                    variant="danger" 
+                                                    className="mb-1 mb-sm-0"
+                                                    onClick={() => handleReject(request._id, request.email, request.transactionId)}
+                                                >
+                                                    Reject
+                                                </Button>
                                             </>
                                         )}
                                     </td>
@@ -83,8 +103,10 @@ const APIKeyRequests = () => {
                         </tbody>
                     </Table>
                 </div>
-            </main>
-        </div>
+            </div>
+        </main>
+    </div>
+</div>
     );
 };
 

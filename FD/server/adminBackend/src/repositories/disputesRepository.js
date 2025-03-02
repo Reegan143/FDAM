@@ -7,6 +7,10 @@ class DisputesRepository {
         return await DisputesModel.find().sort({ createdAt: -1 });
     }
 
+    async getDisputeById(id) {
+        return await DisputesModel.findById(id);
+    }
+
     
 }
 
