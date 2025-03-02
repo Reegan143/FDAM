@@ -26,9 +26,14 @@ const Signup = () => {
   const validateForm = () => {
     const newErrors = {};
     
-    if (!formData.name.trim()) {
+    const nameRegex = /^[A-Za-z ]+$/;
+
+    if (!formData.name.trim() || formData.name.trim().length > 35) {
       newErrors.name = 'Name is required';
+    } else if (!nameRegex.test(formData.name.trim())) {
+      newErrors.name = 'Invalid name. Only letters and spaces are allowed';
     }
+
     
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!formData.email.trim() || !emailRegex.test(formData.email)) {
@@ -54,6 +59,20 @@ const Signup = () => {
     }
     if(!formData.cardType){
       newErrors.cardType = 'Card Type is required';
+    }
+
+    const branchCodeRegex = /^[A-Za-z0-9]{1,8}$/;
+
+    if (!formData.branchCode.trim()) {
+      newErrors.branchCode = 'Branch Code is required';
+    } else if (!branchCodeRegex.test(formData.branchCode.trim())) {
+      newErrors.branchCode = 'Invalid Branch Code. Only letters and numbers (max 8 characters) are allowed';
+    }
+
+    if (!formData.branchName.trim()) {
+      newErrors.branchName = 'Branch Name is required';
+    } else if (!nameRegex.test(formData.branchName.trim())) {
+      newErrors.branchName = 'Invalid Branch Name. Only letters and spaces are allowed';
     }
 
 
@@ -205,6 +224,7 @@ const Signup = () => {
                       onChange={handleChange}
                       isInvalid={!!errors.branchCode}
                       placeholder="Enter your Branch Code"
+
                       />
                     <Form.Control.Feedback type="invalid">
                       {errors.branchCode}
