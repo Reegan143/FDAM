@@ -14,9 +14,8 @@ class DisputesService {
         let isTransactionExist = await DisputesRepository.findDisputeByTransactionId(transactionId);
         let transaction = await DisputesRepository.findTransactionById(transactionId);
         if (!transaction) throw new Error('No transaction found');
-        console.log(transaction.status)
 
-        if(transaction.status === 'submitted'){
+        if(isTransactionExist && isTransactionExist.status === 'submitted'){
             throw new Error('Transaction has already been submitted');
         }
         
@@ -31,7 +30,7 @@ class DisputesService {
         disputeData = { ...disputeData, ticketNumber, email: user.email, amount, adminId: admin.adminId, cardType };
         
         if (vendorName) {
-            const vendor = await userRepository.findVendor( vendorName );
+            const vendor = await UserRepository.findVendor( vendorName );
             if (!vendor) throw new Error('Vendor not found');
             
             const message = `${userName} has raised a dispute on you. <p>Complaint Type: ${complaintType}</p>

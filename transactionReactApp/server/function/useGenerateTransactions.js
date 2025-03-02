@@ -3,9 +3,9 @@ const { generateMultipleTransactions } = require( '../utils/generateTransactions
 const createTransactions = async () => {
   try {
     const transactions = await generateMultipleTransactions({
-      senderAccNo: '987654321213',
+      senderAccNo: '756456354635',
       receiverAccNo: '987654321454',
-      debitCardNumber: '6453728467352452'
+      debitCardNumber: '9823547612083460'
     });
     console.log(transactions);
   } catch (error) {
