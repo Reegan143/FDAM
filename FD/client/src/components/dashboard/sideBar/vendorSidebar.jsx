@@ -50,24 +50,120 @@ const VendorSidebar = () => {
 
   return (
     <>
-      <style>{globalCSS}</style>
-      <nav style={sidebarStyle}>
-        <div className="nav flex-column">
-          {menuItems.map((item) => (
-            <NavLink
-              key={item.path}
-              to={item.path}
-              className={({ isActive }) =>
-                `nav-link d-flex align-items-center ${isActive ? 'active' : ''}`
-              }
-            >
-              <i className={`${item.icon} me-2`}></i>
-              <span>{item.label}</span>
-            </NavLink>
-          ))}
-        </div>
-      </nav>
-    </>
+  <style>
+    {`
+    ${globalCSS}
+    
+    /* Desktop sidebar styles */
+    @media (min-width: 768px) {
+      .sidebar-wrapper {
+        width: 250px;
+        min-width: 250px;
+        height: calc(100vh - 56px);
+        border-right: 1px solid #dee2e6;
+        background-color: white;
+        position: sticky;
+        top: 56px;
+        z-index: 1020;
+      }
+      
+      .sidebar-nav {
+        flex-direction: column !important;
+        padding: 0.5rem;
+      }
+      
+      .nav-link {
+        display: flex;
+        align-items: center;
+        padding: 0.75rem 1rem;
+        color: #333;
+        text-decoration: none;
+        border-radius: 0.25rem;
+        margin-bottom: 0.25rem;
+      }
+      
+      .nav-link i {
+        margin-right: 12px;
+        font-size: 1.1rem;
+        width: 20px;
+        text-align: center;
+      }
+    }
+    
+    /* Mobile sidebar styles */
+    @media (max-width: 767.98px) {
+      .sidebar-wrapper {
+        width: 100%;
+        background-color: white;
+        border-bottom: 1px solid #dee2e6;
+        z-index: 1020;
+        overflow-x: auto;
+      }
+      
+      .sidebar-nav {
+        display: flex;
+        flex-direction: row !important;
+        flex-wrap: nowrap;
+        padding: 0.75rem 0.5rem;
+        margin: 0;
+        white-space: nowrap;
+      }
+      
+      .nav-link {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        padding: 0.5rem 1rem;
+        color: #333;
+        text-decoration: none;
+        border-radius: 0.25rem;
+        margin-right: 0.5rem;
+      }
+      
+      .nav-link i {
+        margin-right: 0.5rem;
+        font-size: 1rem;
+      }
+    }
+    
+    .nav-link:hover {
+      background-color: rgba(13, 110, 253, 0.1);
+    }
+    
+    .nav-link.active {
+      background-color: #0d6efd;
+      color: white;
+    }
+    
+    /* Hide scrollbar but allow scrolling */
+    .sidebar-nav::-webkit-scrollbar {
+      display: none;
+    }
+    
+    .sidebar-nav {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+    `}
+  </style>
+  
+  <div className="sidebar-wrapper">
+    <nav className="sidebar-nav">
+      {menuItems.map((item) => (
+        <NavLink
+          key={item.path}
+          to={item.path}
+          className={({ isActive }) =>
+            `nav-link ${isActive ? 'active' : ''}`
+          }
+        >
+          <i className={`${item.icon} me-2`}></i>
+          <span>{item.label}</span>
+        </NavLink>
+      ))}
+    </nav>
+  </div>
+</>
   );
 };
 

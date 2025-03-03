@@ -50,26 +50,35 @@ function VendorDashboard() {
 
   return (
     <>
-      <ModalAnimationStyles />
-      <div className="d-flex flex-column min-vh-100">
+    <ModalAnimationStyles />
+    <div className="d-flex flex-column vh-100">
+      {/* Fixed header */}
+      <div className="fixed-top">
         <Header />
+      </div>
+      
+      {/* Content area with proper spacing */}
+      <div className="d-flex flex-column flex-md-row" style={{ marginTop: "56px" }}>
+        {/* Sidebar component */}
         <VendorSidebar />
         
+        {/* Notifications */}
         <NotificationToast notifications={notifications} />
-
-        <main className="ms-250 pt-5 mt-4">
-          <div className="container-fluid">
+        
+        {/* Main content area */}
+        <main className="flex-grow-1 p-3 p-md-4" style={{ minWidth: "0" }}>
+          <div className="container-fluid px-0">
             <div className="content-area">
-              <h1>Vendor Portal - {vendorName.toUpperCase()}</h1>
-              <p>Manage your transaction disputes</p>
-
+              <h1 className="h2 mb-2">Vendor Portal - {vendorName.toUpperCase()}</h1>
+              <p className="mb-4">Manage your transaction disputes</p>
+  
               <div className="disputes-section">
                 <DisputeHeader 
                   count={disputes.length}
                   isPolling={isPolling}
                 />
-
-                <Row className="mt-4">
+  
+                <Row className="g-3 mt-2">
                   {disputes.map((dispute) => (
                     <DisputeCard
                       key={dispute._id}
@@ -78,7 +87,14 @@ function VendorDashboard() {
                     />
                   ))}
                 </Row>
-
+                
+                {disputes.length === 0 && (
+                  <div className="text-center p-5 bg-light rounded mt-4">
+                    <i className="fas fa-check-circle fa-3x text-muted mb-3"></i>
+                    <p className="mb-0">You have no disputes to review at this time.</p>
+                  </div>
+                )}
+  
                 <DisputeModal
                   show={showModal}
                   dispute={selectedDispute}
@@ -88,7 +104,7 @@ function VendorDashboard() {
                   modalAnimation={modalAnimation}
                   addNotification={addNotification}
                 />
-
+  
                 <SessionExpiredModal
                   show={sessionExpired}
                   onConfirm={handleSessionExpired}
@@ -98,7 +114,8 @@ function VendorDashboard() {
           </div>
         </main>
       </div>
-    </>
+    </div>
+  </>
   );
 }
 
