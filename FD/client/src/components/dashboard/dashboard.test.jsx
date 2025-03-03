@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import Dashboard from './Dashboard';
+import Dashboard from './ashboard';
 import { AuthContext } from '../context/authContext';
 import { useDisputes } from '../../hooks/userDisputes';
 import { useUser } from '../../hooks/useUser';

@@ -16,7 +16,6 @@ import Notifications from './components/notification/notification';
 import UserSettings from './components/settings/settings';
 import UserTransaction from './components/transaction/userTransaction';
 import AdminDashboard from './components/dashboard/admin/adminDashboard';
-import AdminLoginPage from './components/login/adminLogin';
 import VendorDashboard from './components/dashboard/vendor/vendorDashboard';
 import VendorTransaction from './components/transaction/vendorTransaction';
 import ApiKeys from './components/apiKeys/vendorApiKeys';
@@ -46,7 +45,6 @@ function App() {
         <Route path="/register" element={<Signup />} />
         <Route path="/reset-password" element={<ResetPasswordRequest />} />
         <Route path="/reset-password-form" element={<ResetPasswordForm />} />
-        <Route path="/admin/login" element={<AdminLoginPage />} />
 
         {/* Protected User Routes */}
         <Route path="/dashboard" element={
