@@ -1,4 +1,4 @@
-const NotificationService = require('../services/notificationservices');
+const NotificationService = require('../services/notificationServices');
 
 class NotificationController {
     async getNotifications(req, res) {

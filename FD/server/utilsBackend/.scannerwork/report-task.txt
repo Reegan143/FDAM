@@ -1,0 +1,6 @@
+projectKey=utilsBackend
+serverUrl=http://localhost:9003
+serverVersion=25.2.0.102705
+dashboardUrl=http://localhost:9003/dashboard?id=utilsBackend
+ceTaskId=6b77fd1f-528c-4427-90c0-c340c8ae29e6
+ceTaskUrl=http://localhost:9003/api/ce/task?id=6b77fd1f-528c-4427-90c0-c340c8ae29e6

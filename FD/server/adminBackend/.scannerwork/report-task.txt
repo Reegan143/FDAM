@@ -1,0 +1,6 @@
+projectKey=adminBackend
+serverUrl=http://localhost:9003
+serverVersion=25.2.0.102705
+dashboardUrl=http://localhost:9003/dashboard?id=adminBackend
+ceTaskId=a3dc9664-c2b1-41d7-867a-4532f36167b4
+ceTaskUrl=http://localhost:9003/api/ce/task?id=a3dc9664-c2b1-41d7-867a-4532f36167b4

@@ -4,7 +4,6 @@ class VendorController {
 
     async  requestApiKey(req, res) {
         try {
-            console.log("hello")
             const response = await VendorService.requestApiKey(req.body.transactionId,req.vendor.email);
             res.status(200).json({ message: response.message });
         } catch (error) {

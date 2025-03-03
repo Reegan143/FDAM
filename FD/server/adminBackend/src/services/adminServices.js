@@ -83,9 +83,7 @@ class AdminService {
     async getAllDisputes(){
         return await AdminRepository.getAllDisputes();
     }
-
     
-
     async updateDisputeStatus(disputeId, status, remarks, adminId) {
         const updatedDispute = await AdminRepository.updateDisputeStatus(disputeId, status, remarks, adminId);
         if(updatedDispute.status !== "submitted"){
