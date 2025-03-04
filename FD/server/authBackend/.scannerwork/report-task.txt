@@ -1,6 +1,0 @@
-projectKey=authBackend
-serverUrl=http://localhost:9003
-serverVersion=25.2.0.102705
-dashboardUrl=http://localhost:9003/dashboard?id=authBackend
-ceTaskId=21dcf69e-ae07-4d6b-afe6-b47a14419265
-ceTaskUrl=http://localhost:9003/api/ce/task?id=21dcf69e-ae07-4d6b-afe6-b47a14419265

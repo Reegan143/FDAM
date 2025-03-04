@@ -1,6 +1,0 @@
-projectKey=userBackend
-serverUrl=http://localhost:9003
-serverVersion=25.2.0.102705
-dashboardUrl=http://localhost:9003/dashboard?id=userBackend
-ceTaskId=7c4e43c9-a7b0-42bc-8eac-e41d2d418e3f
-ceTaskUrl=http://localhost:9003/api/ce/task?id=7c4e43c9-a7b0-42bc-8eac-e41d2d418e3f

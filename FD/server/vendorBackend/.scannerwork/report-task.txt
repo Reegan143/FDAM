@@ -1,6 +1,0 @@
-projectKey=vendorBackend
-serverUrl=http://localhost:9003
-serverVersion=25.2.0.102705
-dashboardUrl=http://localhost:9003/dashboard?id=vendorBackend
-ceTaskId=ef1b5634-0929-4df5-9b1a-007d722757c6
-ceTaskUrl=http://localhost:9003/api/ce/task?id=ef1b5634-0929-4df5-9b1a-007d722757c6

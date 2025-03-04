@@ -5,6 +5,7 @@ require('dotenv').config()
 async function validationUser(req, res, next) {
   try {
     const header = req.header('Authorization');
+    
     const token = header.split(" ")[1];
     if (!token) {
       return res.status(401).json({ msg: 'No token, authorization denied' });
