@@ -2,7 +2,7 @@ import axios from "axios";
 
 const createAPIInstance = (port) => {
   return axios.create({
-    baseURL: `http://localhost:${port}/api`,
+    baseURL: `http://${import.meta.env.VITE_HOST}:${port}/api`,
   });
 };
 
