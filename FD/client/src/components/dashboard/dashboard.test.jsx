@@ -45,9 +45,6 @@ vi.mock('../modals/sessionExpiredModal', () => ({
   )
 }));
 
-vi.mock('../chatbot/ChatBubble', () => ({
-  default: () => <div data-testid="mock-chat-bubble">ChatBubble</div>
-}));
 
 vi.mock('../../hooks/userDisputes', () => ({
   useDisputes: vi.fn()
@@ -154,7 +151,6 @@ describe('Dashboard Component', () => {
     
     // Check sidebar and chat bubble are rendered
     expect(screen.getByTestId('mock-sidebar')).toBeInTheDocument();
-    expect(screen.getByTestId('mock-chat-bubble')).toBeInTheDocument();
   });
 
   it('should open modal when dispute card is clicked', async () => {

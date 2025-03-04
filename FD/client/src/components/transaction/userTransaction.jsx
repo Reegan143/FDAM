@@ -6,7 +6,6 @@ import API from "../utils/axiosInstance";
 import { useNavigate } from "react-router-dom";
 import { Button } from "react-bootstrap";
 import { formatCurrency } from '../utils/currencyFormatter';
-import ChatBubble from "../chatbot/ChatBubble";
 
 
 function UserTransaction() {

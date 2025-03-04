@@ -41,7 +41,6 @@ const Header = () => {
   const markAsRead = async (id) => {
     try {
       await API.utils.patch(`/notifications/${id}/read`);
-      setNotifications((prev) => prev.map((n) => (n._id === id ? { ...n, isRead: true } : n)));
       setUnreadCount((prev) => prev - 1);
     } catch (error) {
       console.error("Error marking as read:", error);

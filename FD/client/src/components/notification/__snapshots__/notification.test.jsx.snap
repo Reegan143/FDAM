@@ -1,0 +1,5 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`NotificationsPopup Component > renders correctly when visible 1`] = `null`;
+
+exports[`NotificationsPopup Component > renders no notifications message when list is empty 1`] = `null`;

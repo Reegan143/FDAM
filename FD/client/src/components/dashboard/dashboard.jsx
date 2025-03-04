@@ -4,7 +4,6 @@ import Sidebar from './sideBar/sidebar';
 import DisputeCard from './disputeCard';
 import DisputeModal from './disputeModal';
 import SessionExpiredModal from '../modals/sessionExpiredModal';
-import ChatBubble from '../chatbot/ChatBubble';
 import { useDisputes } from '../../hooks/userDisputes';
 import { useUser } from '../../hooks/useUser';
 import { AuthContext } from '../context/authContext';

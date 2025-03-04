@@ -15,7 +15,7 @@ vi.mock('../components/utils/axiosInstance', () => ({
 // Import the mocked API
 import API from '../components/utils/axiosInstance';
 
-describe('useDisputes Hook', () => {
+describe('userDisputes Hook', () => {
   beforeEach(() => {
     vi.clearAllMocks();
     API.utils.get.mockResolvedValue({

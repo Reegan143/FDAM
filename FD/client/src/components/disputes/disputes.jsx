@@ -4,7 +4,6 @@ import { Form, Button, Container, Row, Col, Alert } from 'react-bootstrap';
 import { useNavigate, useLocation } from 'react-router-dom';
 import Header from '../dashboard/header/header';
 import Sidebar from '../dashboard/sideBar/sidebar';
-import ChatBubble from '../chatbot/ChatBubble';
 
 function DisputesForm() {
   const navigate = useNavigate();

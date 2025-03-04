@@ -3,7 +3,6 @@ import Header from "./dashboard/header/header";
 import Sidebar from "./dashboard/sideBar/sidebar";
 import {setAuthToken} from "./utils/axiosInstance";
 import AuthContext from "./context/authContext";
-import ChatBubble from "./chatbot/ChatBubble";
 import API from "./utils/axiosInstance"
 
 

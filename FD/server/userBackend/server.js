@@ -3,7 +3,6 @@ const connectDB = require('./src/config/db');
 const cors = require('cors');
 const userRoutes = require('./src/routes/userRoutes')
 
-const chatbotRoutes = require('./src/routes/chatbotRoutes');
 
 
 const app = express();

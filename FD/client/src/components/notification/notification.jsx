@@ -1,49 +1,36 @@
 import React from "react";
-import { motion, AnimatePresence } from 'framer-motion';
-import { Button, Badge, Card } from 'react-bootstrap';
-import { Bell, Check, X } from 'lucide-react';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import '@fortawesome/fontawesome-free/css/all.min.css';
+import { Button, Badge, Card } from "react-bootstrap";
+import { Bell, Check, X } from "lucide-react";
+import "bootstrap/dist/css/bootstrap.min.css";
 
-
-
-const NotificationsPopup = ({ 
-  showNotifications, 
-  notifications, 
-  markAsRead, 
-  onClose,
-  unreadCount 
-
-}) => {
+const NotificationsPopup = ({ showNotifications, notifications, markAsRead, onClose, unreadCount }) => {
   const formatDate = (dateString) => {
-    return new Date(dateString).toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit'
-    })}
+    return new Date(dateString).toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+    });
+  };
+
+  if (!showNotifications) return null;
+
   return (
-    <AnimatePresence>
-  {showNotifications && (
-    <motion.div
-      initial={{ opacity: 0, y: -20 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: -20 }}
-      transition={{ duration: 0.3 }}
-      className="position-fixed shadow-lg notification-popup"
-      style={{ 
-        width: "100%", 
-        maxWidth: "380px", 
+    <div
+      className="position-fixed shadow-lg bg-white border rounded notification-popup"
+      style={{
+        width: "100%",
+        maxWidth: "380px",
         zIndex: 2000,
-        top: "56px", /* Height of your header */
+        top: "56px", 
         right: "0",
         bottom: "auto",
-        left: "auto"
+        left: "auto",
       }}
     >
       <Card className="border-0 rounded-0 rounded-bottom-lg overflow-hidden">
-        <div className="bg-primary text-white p-2 p-sm-3 d-flex justify-content-between align-items-center">
+        <div className="bg-primary text-white p-2 d-flex justify-content-between align-items-center">
           <div className="d-flex align-items-center">
             <Bell size={18} className="me-2" />
             <h6 className="mb-0">Notifications</h6>
@@ -53,9 +40,9 @@ const NotificationsPopup = ({
               </Badge>
             )}
           </div>
-          <Button 
-            variant="link" 
-            className="text-white p-0 d-flex align-items-center justify-content-center" 
+          <Button
+            variant="link"
+            className="text-white p-0 d-flex align-items-center justify-content-center"
             onClick={onClose}
             aria-label="Close notifications"
             style={{ width: "32px", height: "32px" }}
@@ -63,14 +50,10 @@ const NotificationsPopup = ({
             <X size={18} />
           </Button>
         </div>
-        
-        <div 
-          className="notification-container" 
-          style={{ 
-            maxHeight: "min(400px, calc(100vh - 120px))", 
-            overflowY: "auto",
-            overscrollBehavior: "contain"
-          }}
+
+        <div
+          className="notification-container"
+          style={{ maxHeight: "400px", overflowY: "auto", overscrollBehavior: "contain" }}
         >
           {notifications.length === 0 ? (
             <div className="text-center p-4">
@@ -79,54 +62,40 @@ const NotificationsPopup = ({
             </div>
           ) : (
             notifications.map((notification) => (
-              <motion.div
+              <div
                 key={notification._id}
-                initial={{ opacity: 0, x: -10 }}
-                animate={{ opacity: 1, x: 0 }}
-                className={`p-2 p-sm-3 border-bottom ${
-                  notification.isRead ? 'bg-white' : 'bg-light'
-                }`}
+                className={`p-2 border-bottom ${notification.isRead ? "bg-white" : "bg-light"}`}
               >
                 <div className="d-flex justify-content-between align-items-start">
-                  <div className="flex-grow-1 pe-2">
+                  <div className="flex-grow-1">
                     <div className="d-flex flex-column flex-sm-row align-items-sm-center mb-1">
                       <div>
-                        <span className="badge bg-primary me-2">
-                          #{notification.ticketNumber}
-                        </span>
-                        <small className="text-muted">
-                          {notification.complaintType}
-                        </small>
+                        <span className="badge bg-primary me-2">#{notification.ticketNumber}</span>
+                        <small className="text-muted">{notification.complaintType}</small>
                       </div>
                       <small className="text-muted mt-1 mt-sm-0 ms-sm-auto" style={{ fontSize: "0.7rem" }}>
                         {formatDate(notification.createdAt)}
                       </small>
                     </div>
-                    <p className="mb-0 text-dark small">
-                      {notification.messages}
-                    </p>
+                    <p className="mb-0 text-dark small">{notification.messages}</p>
                   </div>
                   {!notification.isRead && (
-                    <motion.button
-                      whileHover={{ scale: 1.1 }}
-                      whileTap={{ scale: 0.9 }}
+                    <button
                       className="btn btn-outline-success btn-sm p-1 ms-1 d-flex align-items-center justify-content-center"
                       onClick={() => markAsRead(notification._id)}
                       aria-label="Mark as read"
                       style={{ minWidth: "32px", height: "32px", flexShrink: 0 }}
                     >
                       <Check size={16} />
-                    </motion.button>
+                    </button>
                   )}
                 </div>
-              </motion.div>
+              </div>
             ))
           )}
         </div>
       </Card>
-    </motion.div>
-  )}
-</AnimatePresence>
+    </div>
   );
 };
 
