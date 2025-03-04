@@ -25,7 +25,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/166</span>
+                <span class='fraction'>0/162</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/166</span>
+                <span class='fraction'>0/162</span>
             </div>
         
             
@@ -251,10 +251,8 @@
 <a name='L186'></a><a href='#L186'>186</a>
 <a name='L187'></a><a href='#L187'>187</a>
 <a name='L188'></a><a href='#L188'>188</a>
-<a name='L189'></a><a href='#L189'>189</a>
-<a name='L190'></a><a href='#L190'>190</a>
-<a name='L191'></a><a href='#L191'>191</a>
-<a name='L192'></a><a href='#L192'>192</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
+<a name='L189'></a><a href='#L189'>189</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -306,10 +304,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -320,7 +315,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -450,6 +444,7 @@
 <span class="cstat-no" title="statement not covered" >import 'bootstrap/dist/css/bootstrap.min.css'</span>
 <span class="cstat-no" title="statement not covered" >import { useNavigate, Link } from 'react-router-dom'</span>
 <span class="cstat-no" title="statement not covered" >import AuthContext from '../context/authContext'</span>
+<span class="cstat-no" title="statement not covered" >import API  from '../utils/axiosInstance'</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >const LoginPage = () =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >  const navigate = useNavigate()</span>
@@ -496,15 +491,12 @@
 <span class="cstat-no" title="statement not covered" >    setErrorMessage('')</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >    try {</span>
-<span class="cstat-no" title="statement not covered" >      const response = await fetch('http://localhost:8000/api/user/auth/login', {</span>
-<span class="cstat-no" title="statement not covered" >        method: 'POST',</span>
-<span class="cstat-no" title="statement not covered" >        headers: { 'Content-Type': 'application/json' },</span>
-<span class="cstat-no" title="statement not covered" >        body: JSON.stringify({ email, password })</span>
-<span class="cstat-no" title="statement not covered" >      })</span>
+<span class="cstat-no" title="statement not covered" >      const response = await API.auth.post('/auth/login', { email, password })</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >      const data = await response.json()</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >      if (response.ok) {</span>
+<span class="cstat-no" title="statement not covered" >      const data = response.data</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >      if (response.data.message) {</span>
 <span class="cstat-no" title="statement not covered" >        setModalTitle('Success')</span>
 <span class="cstat-no" title="statement not covered" >        setModalMessage('Login successful')</span>
 <span class="cstat-no" title="statement not covered" >        setShowModal(true)</span>
@@ -515,7 +507,6 @@
 <span class="cstat-no" title="statement not covered" >          sessionStorage.removeItem('hasReloaded')</span>
 <span class="cstat-no" title="statement not covered" >          sessionStorage.removeItem('lastPath')</span>
 <span class="cstat-no" title="statement not covered" >          setTimeout(() =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >            console.log(data.user.role)</span>
 <span class="cstat-no" title="statement not covered" >            const redirectPath = data.user.role === 'admin' </span>
 <span class="cstat-no" title="statement not covered" >          ? "/admin/dashboard" </span>
 <span class="cstat-no" title="statement not covered" >          : data.user.role === 'vendor' </span>
@@ -532,7 +523,7 @@
 <span class="cstat-no" title="statement not covered" >      }</span>
 <span class="cstat-no" title="statement not covered" >    } catch (error) {</span>
 <span class="cstat-no" title="statement not covered" >      setModalTitle('Error')</span>
-<span class="cstat-no" title="statement not covered" >      setModalMessage('An error occurred. Please try again later.')</span>
+<span class="cstat-no" title="statement not covered" >      setModalMessage(error.response?.data?.error || 'An error occurred. Please try again later.')</span>
 <span class="cstat-no" title="statement not covered" >      setShowModal(true)</span>
 <span class="cstat-no" title="statement not covered" >    } finally {</span>
 <span class="cstat-no" title="statement not covered" >      setIsLoading(false)</span>
@@ -643,7 +634,7 @@
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-02-27T13:35:00.279Z
+                at 2025-03-04T02:00:45.093Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>

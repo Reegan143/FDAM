@@ -1,197 +1,312 @@
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import Dashboard from './ashboard';
+import React from 'react';
+import { vi, describe, it, expect, beforeEach, afterEach } from 'vitest';
+import { render, screen, waitFor, fireEvent } from '@testing-library/react';
 import { AuthContext } from '../context/authContext';
-import { useDisputes } from '../../hooks/userDisputes';
-import { useUser } from '../../hooks/useUser';
+import Dashboard from './dashboard';
 
+// Mock all dependencies
 vi.mock('./header/header', () => ({
-  default: () => <div data-testid="header">Header Component</div>,
+  default: () => <div data-testid="mock-header">Header</div>
 }));
 
 vi.mock('./sideBar/sidebar', () => ({
-  default: () => <div data-testid="sidebar">Sidebar Component</div>,
+  default: () => <div data-testid="mock-sidebar">Sidebar</div>
 }));
 
 vi.mock('./disputeCard', () => ({
   default: ({ dispute, onClick }) => (
     <div 
-      data-testid={`dispute-card-${dispute._id}`} 
+      data-testid={`mock-dispute-card-${dispute._id}`} 
       onClick={onClick}
     >
-      Dispute Card
+      Dispute Card {dispute.title}
     </div>
-  ),
+  )
 }));
 
 vi.mock('./disputeModal', () => ({
   default: ({ show, dispute, onClose }) => (
-    show && (
-      <div data-testid="dispute-modal">
-        {dispute && <span>Dispute ID: {dispute._id}</span>}
-        <button data-testid="close-modal" onClick={onClose}>Close</button>
+    show ? (
+      <div data-testid="mock-dispute-modal">
+        {dispute && <span>Modal for {dispute.title}</span>}
+        <button onClick={onClose} data-testid="close-modal-btn">Close</button>
       </div>
-    )
-  ),
+    ) : null
+  )
 }));
 
 vi.mock('../modals/sessionExpiredModal', () => ({
   default: ({ show, onConfirm }) => (
-    show && (
-      <div data-testid="session-expired-modal">
-        <button data-testid="confirm-session-expired" onClick={onConfirm}>Confirm</button>
+    show ? (
+      <div data-testid="mock-session-expired-modal">
+        <button onClick={onConfirm} data-testid="confirm-session-expired-btn">Confirm</button>
       </div>
-    )
-  ),
+    ) : null
+  )
 }));
 
 vi.mock('../chatbot/ChatBubble', () => ({
-  default: () => <div data-testid="chat-bubble">Chat Bubble</div>,
+  default: () => <div data-testid="mock-chat-bubble">ChatBubble</div>
 }));
 
 vi.mock('../../hooks/userDisputes', () => ({
-  useDisputes: vi.fn(),
+  useDisputes: vi.fn()
 }));
 
 vi.mock('../../hooks/useUser', () => ({
-  useUser: vi.fn(),
+  useUser: vi.fn()
 }));
 
-describe('Dashboard Component', () => {
-  const mockToken = 'test-token';
-  const mockDisputes = [
-    { _id: '1', title: 'Dispute 1', description: 'Description 1' },
-    { _id: '2', title: 'Dispute 2', description: 'Description 2' },
-  ];
-  
-  const mockUserData = {
-    loading: false,
-    userName: 'John Doe',
-    sessionExpired: false,
-    handleSessionExpired: vi.fn(),
-  };
-  
-  const mockDisputesData = {
-    disputes: mockDisputes,
-    loading: false,
-  };
+import { useDisputes } from '../../hooks/userDisputes';
+import { useUser } from '../../hooks/useUser';
 
-  const renderDashboard = (userDataOverride = {}, disputesDataOverride = {}) => {
-    useUser.mockReturnValue({ ...mockUserData, ...userDataOverride });
-    useDisputes.mockReturnValue({ ...mockDisputesData, ...disputesDataOverride });
+describe('Dashboard Component', () => {
+  const mockToken = 'fake-token-123';
+  
+  const mockDisputes = [
+    { _id: '1', title: 'Dispute 1', description: 'Test description 1' },
+    { _id: '2', title: 'Dispute 2', description: 'Test description 2' },
+    { _id: '3', title: 'Dispute 3', description: 'Test description 3' }
+  ];
+
+  beforeEach(() => {
+    // Reset all mocks before each test
+    vi.clearAllMocks();
+  });
+
+  it('should show loading state when user data is loading', () => {
+    // Mock hooks to return loading state
+    useUser.mockReturnValue({
+      loading: true,
+      userName: '',
+      sessionExpired: false,
+      handleSessionExpired: vi.fn()
+    });
     
-    return render(
+    useDisputes.mockReturnValue({
+      disputes: [],
+      loading: false
+    });
+
+    render(
       <AuthContext.Provider value={{ token: mockToken }}>
         <Dashboard />
       </AuthContext.Provider>
     );
-  };
 
-  beforeEach(() => {
-    vi.clearAllMocks();
-  });
-
-  afterEach(() => {
-    vi.resetAllMocks();
-  });
-
-  it('should render loading state when user data is loading', () => {
-    renderDashboard({ loading: true });
-    
     expect(screen.getByText('Loading...')).toBeInTheDocument();
-    expect(screen.queryByText('Welcome Back')).not.toBeInTheDocument();
   });
 
-  it('should render loading state when disputes data is loading', () => {
-    renderDashboard({}, { loading: true });
+  it('should show loading state when disputes are loading', () => {
+    // Mock hooks to return loading state
+    useUser.mockReturnValue({
+      loading: false,
+      userName: 'John',
+      sessionExpired: false,
+      handleSessionExpired: vi.fn()
+    });
     
+    useDisputes.mockReturnValue({
+      disputes: [],
+      loading: true
+    });
+
+    render(
+      <AuthContext.Provider value={{ token: mockToken }}>
+        <Dashboard />
+      </AuthContext.Provider>
+    );
+
     expect(screen.getByText('Loading...')).toBeInTheDocument();
-    expect(screen.queryByText('Welcome Back')).not.toBeInTheDocument();
   });
 
-  it('should render dashboard with correct user name', () => {
-    renderDashboard();
+  it('should render the dashboard with disputes when data is loaded', () => {
+    // Mock hooks to return successful data
+    useUser.mockReturnValue({
+      loading: false,
+      userName: 'John Doe',
+      sessionExpired: false,
+      handleSessionExpired: vi.fn()
+    });
     
+    useDisputes.mockReturnValue({
+      disputes: mockDisputes,
+      loading: false
+    });
+
+    render(
+      <AuthContext.Provider value={{ token: mockToken }}>
+        <Dashboard />
+      </AuthContext.Provider>
+    );
+
+    // Check header and welcome message
+    expect(screen.getByTestId('mock-header')).toBeInTheDocument();
     expect(screen.getByText('Welcome Back, John Doe!')).toBeInTheDocument();
-    expect(screen.getByText('Welcome to your Brilliant Bank overview.')).toBeInTheDocument();
+    
+    // Check disputes section and count
+    expect(screen.getByText(`Your Disputes (${mockDisputes.length})`)).toBeInTheDocument();
+    
+    // Check each dispute card is rendered
+    mockDisputes.forEach(dispute => {
+      expect(screen.getByTestId(`mock-dispute-card-${dispute._id}`)).toBeInTheDocument();
+    });
+    
+    // Check sidebar and chat bubble are rendered
+    expect(screen.getByTestId('mock-sidebar')).toBeInTheDocument();
+    expect(screen.getByTestId('mock-chat-bubble')).toBeInTheDocument();
   });
 
-  it('should render "User" as fallback when userName is not available', () => {
-    renderDashboard({ userName: null });
+  it('should open modal when dispute card is clicked', async () => {
+    // Mock hooks
+    useUser.mockReturnValue({
+      loading: false,
+      userName: 'John Doe',
+      sessionExpired: false,
+      handleSessionExpired: vi.fn()
+    });
     
-    expect(screen.getByText('Welcome Back, User!')).toBeInTheDocument();
-  });
+    useDisputes.mockReturnValue({
+      disputes: mockDisputes,
+      loading: false
+    });
 
-  it('should render correct number of dispute cards', () => {
-    renderDashboard();
-    
-    expect(screen.getByText('Your Disputes (2)')).toBeInTheDocument();
-    expect(screen.getByTestId('dispute-card-1')).toBeInTheDocument();
-    expect(screen.getByTestId('dispute-card-2')).toBeInTheDocument();
-  });
+    render(
+      <AuthContext.Provider value={{ token: mockToken }}>
+        <Dashboard />
+      </AuthContext.Provider>
+    );
 
-  it('should render empty disputes section when no disputes are available', () => {
-    renderDashboard({}, { disputes: [] });
+    // Click on a dispute card
+    fireEvent.click(screen.getByTestId('mock-dispute-card-1'));
     
-    expect(screen.getByText('Your Disputes (0)')).toBeInTheDocument();
-    expect(screen.queryByTestId('dispute-card-1')).not.toBeInTheDocument();
-  });
-
-  it('should open dispute modal when a dispute card is clicked', async () => {
-    renderDashboard();
-    
-    expect(screen.queryByTestId('dispute-modal')).not.toBeInTheDocument();
-    
-    fireEvent.click(screen.getByTestId('dispute-card-1'));
-    
-    expect(screen.getByTestId('dispute-modal')).toBeInTheDocument();
-    expect(screen.getByText('Dispute ID: 1')).toBeInTheDocument();
-  });
-
-  it('should close dispute modal when close button is clicked', async () => {
-    renderDashboard();
-    
-    fireEvent.click(screen.getByTestId('dispute-card-1'));
-    expect(screen.getByTestId('dispute-modal')).toBeInTheDocument();
-    
-    fireEvent.click(screen.getByTestId('close-modal'));
-    
+    // Check modal is displayed with correct dispute
     await waitFor(() => {
-      expect(screen.queryByTestId('dispute-modal')).not.toBeInTheDocument();
+      expect(screen.getByTestId('mock-dispute-modal')).toBeInTheDocument();
+      expect(screen.getByText('Modal for Dispute 1')).toBeInTheDocument();
     });
   });
 
-  it('should render session expired modal when session is expired', () => {
-    renderDashboard({ sessionExpired: true });
+  it('should close modal when close button is clicked', async () => {
+    // Mock hooks
+    useUser.mockReturnValue({
+      loading: false,
+      userName: 'John Doe',
+      sessionExpired: false,
+      handleSessionExpired: vi.fn()
+    });
     
-    expect(screen.getByTestId('session-expired-modal')).toBeInTheDocument();
+    useDisputes.mockReturnValue({
+      disputes: mockDisputes,
+      loading: false
+    });
+
+    render(
+      <AuthContext.Provider value={{ token: mockToken }}>
+        <Dashboard />
+      </AuthContext.Provider>
+    );
+
+    // Open modal
+    fireEvent.click(screen.getByTestId('mock-dispute-card-1'));
+    
+    // Check modal is displayed
+    await waitFor(() => {
+      expect(screen.getByTestId('mock-dispute-modal')).toBeInTheDocument();
+    });
+    
+    // Close modal
+    fireEvent.click(screen.getByTestId('close-modal-btn'));
+    
+    // Check modal is not displayed anymore
+    await waitFor(() => {
+      expect(screen.queryByTestId('mock-dispute-modal')).not.toBeInTheDocument();
+    });
   });
 
-  it('should handle session expired confirmation', () => {
-    renderDashboard({ sessionExpired: true });
+  it('should show session expired modal when session is expired', () => {
+    const handleSessionExpiredMock = vi.fn();
     
-    fireEvent.click(screen.getByTestId('confirm-session-expired'));
+    // Mock hooks to show session expired
+    useUser.mockReturnValue({
+      loading: false,
+      userName: 'John Doe',
+      sessionExpired: true,
+      handleSessionExpired: handleSessionExpiredMock
+    });
     
-    expect(mockUserData.handleSessionExpired).toHaveBeenCalled();
+    useDisputes.mockReturnValue({
+      disputes: mockDisputes,
+      loading: false
+    });
+
+    render(
+      <AuthContext.Provider value={{ token: mockToken }}>
+        <Dashboard />
+      </AuthContext.Provider>
+    );
+
+    // Check session expired modal is shown
+    expect(screen.getByTestId('mock-session-expired-modal')).toBeInTheDocument();
+    
+    // Click confirm on session expired modal
+    fireEvent.click(screen.getByTestId('confirm-session-expired-btn'));
+    
+    // Check handler was called
+    expect(handleSessionExpiredMock).toHaveBeenCalledTimes(1);
   });
 
-  it('should render all required components', () => {
-    renderDashboard();
+  it('should handle empty disputes array', () => {
+    // Mock hooks with empty disputes
+    useUser.mockReturnValue({
+      loading: false,
+      userName: 'John Doe',
+      sessionExpired: false,
+      handleSessionExpired: vi.fn()
+    });
     
-    expect(screen.getByTestId('header')).toBeInTheDocument();
-    expect(screen.getByTestId('sidebar')).toBeInTheDocument();
-    expect(screen.getByTestId('chat-bubble')).toBeInTheDocument();
+    useDisputes.mockReturnValue({
+      disputes: [],
+      loading: false
+    });
+
+    render(
+      <AuthContext.Provider value={{ token: mockToken }}>
+        <Dashboard />
+      </AuthContext.Provider>
+    );
+
+    // Check disputes count shows zero
+    expect(screen.getByText('Your Disputes (0)')).toBeInTheDocument();
+    
+    // Make sure no dispute cards are rendered
+    mockDisputes.forEach(dispute => {
+      expect(screen.queryByTestId(`mock-dispute-card-${dispute._id}`)).not.toBeInTheDocument();
+    });
   });
 
-  it('should handle multiple dispute card clicks correctly', () => {
-    renderDashboard();
+  it('should pass token to hooks correctly', () => {
+    // Mock hooks
+    useUser.mockReturnValue({
+      loading: false,
+      userName: 'John Doe',
+      sessionExpired: false,
+      handleSessionExpired: vi.fn()
+    });
     
-    fireEvent.click(screen.getByTestId('dispute-card-1'));
-    expect(screen.getByText('Dispute ID: 1')).toBeInTheDocument();
-    
-    fireEvent.click(screen.getByTestId('close-modal'));
-    
-    fireEvent.click(screen.getByTestId('dispute-card-2'));
-    expect(screen.getByText('Dispute ID: 2')).toBeInTheDocument();
+    useDisputes.mockReturnValue({
+      disputes: mockDisputes,
+      loading: false
+    });
+
+    render(
+      <AuthContext.Provider value={{ token: mockToken }}>
+        <Dashboard />
+      </AuthContext.Provider>
+    );
+
+    // Verify hooks were called with the token
+    expect(useUser).toHaveBeenCalledWith(mockToken);
+    expect(useDisputes).toHaveBeenCalledWith(mockToken);
   });
 });

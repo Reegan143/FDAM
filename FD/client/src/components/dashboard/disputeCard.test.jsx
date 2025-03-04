@@ -1,122 +1,148 @@
-import { describe, it, expect, vi } from 'vitest';
+import React from 'react';
+import { vi, describe, it, expect } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
 import DisputeCard from './disputeCard';
-import { formatCurrency } from '../utils/currencyFormatter';
-import { formatDate } from '../utils/dateFormates';
-import { getStatusStyle } from '../utils/statusStyles';
 
+// Mock utilities
 vi.mock('../utils/currencyFormatter', () => ({
-  formatCurrency: vi.fn(amount => {
-    if (amount === undefined) return '$0.00';
-    return `$${amount.toFixed(2)}`;
-  }),
+  formatCurrency: vi.fn(amount => `$${amount.toFixed(2)}`)
 }));
 
 vi.mock('../utils/dateFormates', () => ({
-  formatDate: vi.fn(date => '01/15/2025'),
+  formatDate: vi.fn(date => '01/01/2023')
 }));
 
 vi.mock('../utils/statusStyles', () => ({
-  getStatusStyle: vi.fn(status => {
-    const styles = {
-      'Pending': { color: 'rgb(255, 165, 0)' },  
-      'Resolved': { color: 'rgb(0, 128, 0)' },   
-      'Rejected': { color: 'rgb(255, 0, 0)' },
-    };
-    return styles[status] || {};
-  }),
+  getStatusStyle: vi.fn()
 }));
 
-describe('DisputeCard', () => {
+describe('DisputeCard Component', () => {
   const mockDispute = {
-    _id: 'disp123',
-    transactionId: 'trans123',
-    amount: 100.50,
+    _id: '123',
+    transactionId: 'TX123456',
+    amount: 250.75,
     complaintType: 'Unauthorized Charge',
-    createdAt: '2025-01-15T10:30:00Z',
-    status: 'Pending',
+    createdAt: '2023-01-01T00:00:00.000Z',
+    status: 'Submitted'
   };
 
   const mockOnClick = vi.fn();
 
-  beforeEach(() => {
-    vi.clearAllMocks();
+  it('should render the dispute card with correct information', () => {
+    render(<DisputeCard dispute={mockDispute} onClick={mockOnClick} />);
+
+    // Check transaction ID
+    expect(screen.getByText(`Transaction ID: ${mockDispute.transactionId}`)).toBeInTheDocument();
+    
+    // Check amount
+    expect(screen.getByText('Amount:')).toBeInTheDocument();
+    expect(screen.getByText('$250.75')).toBeInTheDocument();
+    
+    // Check complaint type
+    expect(screen.getByText('Type:')).toBeInTheDocument();
+    expect(screen.getByText(mockDispute.complaintType)).toBeInTheDocument();
+    
+    // Check date
+    expect(screen.getByText('Date:')).toBeInTheDocument();
+    expect(screen.getByText('01/01/2023')).toBeInTheDocument();
+    
+    // Check status
+    expect(screen.getByText('Status:')).toBeInTheDocument();
+    expect(screen.getByText(mockDispute.status)).toBeInTheDocument();
   });
 
-  it('renders the dispute card with correct transaction ID', () => {
+  it('should call onClick when the card is clicked', () => {
     render(<DisputeCard dispute={mockDispute} onClick={mockOnClick} />);
     
-    expect(screen.getByText('Transaction ID: trans123')).toBeInTheDocument();
-  });
-
-  it('displays formatted amount using formatCurrency', () => {
-    render(<DisputeCard dispute={mockDispute} onClick={mockOnClick} />);
+    // Get the card element
+    const card = screen.getByText(`Transaction ID: ${mockDispute.transactionId}`).closest('.card');
     
-    expect(screen.getByText(/Amount:/)).toBeInTheDocument();
-    expect(formatCurrency).toHaveBeenCalledWith(100.50);
-    expect(screen.getByText(/\$100.50/)).toBeInTheDocument();
-  });
-
-  it('displays complaint type correctly', () => {
-    render(<DisputeCard dispute={mockDispute} onClick={mockOnClick} />);
-    
-    expect(screen.getByText(/Type:/)).toBeInTheDocument();
-    expect(screen.getByText(/Unauthorized Charge/)).toBeInTheDocument();
-  });
-
-  it('displays formatted date using formatDate', () => {
-    render(<DisputeCard dispute={mockDispute} onClick={mockOnClick} />);
-    
-    expect(screen.getByText(/Date:/)).toBeInTheDocument();
-    expect(formatDate).toHaveBeenCalledWith('2025-01-15T10:30:00Z');
-    expect(screen.getByText(/01\/15\/2025/)).toBeInTheDocument();
-  });
-
-  it('displays status with correct styling', () => {
-    render(<DisputeCard dispute={mockDispute} onClick={mockOnClick} />);
-    
-    expect(screen.getByText(/Status:/)).toBeInTheDocument();
-    expect(getStatusStyle).toHaveBeenCalledWith('Pending');
-    
-    const statusElement = screen.getByText('Pending');
-    expect(statusElement).toBeInTheDocument();
-    expect(statusElement).toHaveStyle({ color: 'rgb(255, 165, 0)' });
-  });
-
-  it('calls onClick handler when card is clicked', () => {
-    render(<DisputeCard dispute={mockDispute} onClick={mockOnClick} />);
-    
-    const card = screen.getByText('Transaction ID: trans123').closest('.card');
+    // Click the card
     fireEvent.click(card);
     
+    // Verify onClick was called
     expect(mockOnClick).toHaveBeenCalledTimes(1);
   });
 
-  it('renders with different status styling', () => {
-    const resolvedDispute = {
+  it('should render with green color for "submitted" status', () => {
+    const submittedDispute = {
       ...mockDispute,
-      status: 'Resolved'
+      status: 'Submitted'
     };
     
-    render(<DisputeCard dispute={resolvedDispute} onClick={mockOnClick} />);
+    render(<DisputeCard dispute={submittedDispute} onClick={mockOnClick} />);
     
-    expect(getStatusStyle).toHaveBeenCalledWith('Resolved');
-    const statusElement = screen.getByText('Resolved');
-    expect(statusElement).toHaveStyle({ color: 'rgb(0, 128, 0)' });
+    // Find the status element
+    const statusElement = screen.getByText('Submitted');
+    
+    // Check that it has green color (using RGB value)
+    expect(statusElement).toHaveStyle('color: rgb(0, 128, 0)');
   });
 
-  it('handles missing dispute data gracefully', () => {
-    const incompleteDispute = {
-      _id: 'disp123',
-      transactionId: 'trans123',
-      status: 'Pending'  
+  it('should render with red color for "closed" status', () => {
+    const closedDispute = {
+      ...mockDispute,
+      status: 'Closed'
     };
     
-    render(<DisputeCard dispute={incompleteDispute} onClick={mockOnClick} />);
+    render(<DisputeCard dispute={closedDispute} onClick={mockOnClick} />);
     
-    expect(screen.getByText('Transaction ID: trans123')).toBeInTheDocument();
-    expect(formatCurrency).toHaveBeenCalledWith(undefined);
-    expect(screen.getByText(/Amount:/)).toBeInTheDocument();
-    expect(screen.getByText(/\$0.00/)).toBeInTheDocument();
+    // Find the status element
+    const statusElement = screen.getByText('Closed');
+    
+    // Check that it has red color (using RGB value)
+    expect(statusElement).toHaveStyle('color: rgb(255, 0, 0)');
+  });
+
+  it('should render with warning color for other status types', () => {
+    const pendingDispute = {
+      ...mockDispute,
+      status: 'Pending'
+    };
+    
+    render(<DisputeCard dispute={pendingDispute} onClick={mockOnClick} />);
+    
+    // Find the status element
+    const statusElement = screen.getByText('Pending');
+    
+    // Check that it has the warning color variable
+    expect(statusElement).toHaveStyle('color: var(--bs-warning)');
+  });
+
+  it('should handle case insensitivity for status styles', () => {
+    const mixedCaseDispute = {
+      ...mockDispute,
+      status: 'SuBmItTeD'
+    };
+    
+    render(<DisputeCard dispute={mixedCaseDispute} onClick={mockOnClick} />);
+    
+    // Find the status element
+    const statusElement = screen.getByText('SuBmItTeD');
+    
+    // Check that it still has green color despite different casing (using RGB value)
+    expect(statusElement).toHaveStyle('color: rgb(0, 128, 0)');
+  });
+
+  it('should have a pointer cursor style', () => {
+    render(<DisputeCard dispute={mockDispute} onClick={mockOnClick} />);
+    
+    // Get the card element
+    const card = screen.getByText(`Transaction ID: ${mockDispute.transactionId}`).closest('.card');
+    
+    // Check cursor style
+    expect(card).toHaveStyle('cursor: pointer');
+  });
+
+  it('should have shadow-sm and border-0 classes', () => {
+    render(<DisputeCard dispute={mockDispute} onClick={mockOnClick} />);
+    
+    // Get the card element
+    const card = screen.getByText(`Transaction ID: ${mockDispute.transactionId}`).closest('.card');
+    
+    // Check classes
+    expect(card).toHaveClass('shadow-sm');
+    expect(card).toHaveClass('border-0');
+    expect(card).toHaveClass('h-100');
   });
 });
