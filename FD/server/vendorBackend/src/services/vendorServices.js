@@ -64,8 +64,12 @@ class VendorService {
         const vendor = await vendorRepository.findVendorByEmail(email)
         if(!vendor ||!vendor.apiKey) throw new Error("API Key not found. Please request an API Key first.");
         
-        const decodedApi = await jwt.verify(apiKey, vendor.vendorName);
-        if(!decodedApi) throw new Error("API Key is not valid. Please request it again")
+        try{
+            await jwt.verify(apiKey, vendor.vendorName);
+        }
+        catch(e){
+            throw new Error("API Key is not valid. Please request it again")
+        }
             
         return decodedApi;
     }
