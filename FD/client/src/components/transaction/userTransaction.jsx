@@ -201,7 +201,6 @@ function UserTransaction() {
           )}
         </div>
       </div>
-      <ChatBubble />
     </main>
   </div>
 </div>

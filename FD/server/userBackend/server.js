@@ -15,7 +15,6 @@ connectDB();
 
 const startUserServer = async () => {
     app.use('/api/user', userRoutes)
-    app.use('/api/chatbot', chatbotRoutes);
     const PORT = process.env.PORT || 5000;
     app.listen(PORT, () => console.log(`User Server running on port ${PORT}`));
 }

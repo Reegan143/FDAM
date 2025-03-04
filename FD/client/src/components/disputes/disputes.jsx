@@ -321,7 +321,6 @@ function DisputesForm() {
           </div>
         </div>
       </div>
-      <ChatBubble/>
     </main>
   </div>
 </div>

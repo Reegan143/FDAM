@@ -163,7 +163,6 @@ function DisputeStatus() {
           )}
         </div>
       </div>
-      <ChatBubble />
     </main>
   </div>
 </div>
