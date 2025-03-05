@@ -11,7 +11,6 @@ function DisputeModal({ show, dispute, onClose }) {
       if (!dispute) return;
       generateUserReport(dispute);
     } catch (error) {
-      console.error('Error generating PDF:', error);
       alert('Failed to generate PDF. Please try again.');
     }
   };

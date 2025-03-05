@@ -172,7 +172,6 @@ describe('DisputeModal Component', () => {
     fireEvent.click(downloadButton);
     
     // Verify error handling
-    expect(console.error).toHaveBeenCalledWith('Error generating PDF:', expect.any(Error));
     expect(window.alert).toHaveBeenCalledWith('Failed to generate PDF. Please try again.');
   });
 

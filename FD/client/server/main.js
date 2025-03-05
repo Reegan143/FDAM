@@ -12,3 +12,6 @@ app.get('*', (req, res) => {
 app.listen(80, () => {
     console.log('listening on port http://localhost:80')
 })
+
+
+export default app;
