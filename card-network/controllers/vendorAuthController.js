@@ -19,7 +19,18 @@ const generateVendorApiKey = async (req, res) => {
     if (!isTransaction) {
       return res.json({ error: 'Transaction not found' });
     }
-    const apiKey = await jwt.sign({isTransaction}, vendorName, {expiresIn:'24h'})
+
+    let transaction = {senderAccNo : isTransaction.senderAccNo,
+                        senderName : isTransaction.senderName,
+                        transactionId : isTransaction.transactionId,
+                        receiverAccNo : isTransaction.receiverAccNo,
+                        receiverName : isTransaction.receiverName,
+                        amount : isTransaction.amount,
+                        status : isTransaction.status,
+                        transactionDate : isTransaction.transactionDate
+    }
+
+    const apiKey = await jwt.sign({transaction}, vendorName, {expiresIn:'24h'})
 
     if (!vendor) {
       vendor = new VendorAPIKey({ vendorName, apiKey });
