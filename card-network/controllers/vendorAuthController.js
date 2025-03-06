@@ -30,6 +30,8 @@ const generateVendorApiKey = async (req, res) => {
                         transactionDate : isTransaction.transactionDate
     }
 
+    console.log(transaction)
+
     const apiKey = await jwt.sign({transaction}, vendorName, {expiresIn:'24h'})
 
     if (!vendor) {

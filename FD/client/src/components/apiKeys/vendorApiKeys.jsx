@@ -75,7 +75,7 @@ const ApiKeys = () => {
                 </tr>
               </thead>
               <tbody>
-                ${Object.entries(response.data.decodedApiKey.isTransaction).map(([key, value]) => `
+                ${Object.entries(response.data.decodedApiKey.transaction).map(([key, value]) => `
                   <tr>
                     <td><strong>${key}</strong></td>
                     <td>${value}</td>
